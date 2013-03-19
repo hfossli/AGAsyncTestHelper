@@ -56,6 +56,8 @@
 		A3EE530416F87345007706C6 /* AsyncTestWaitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AsyncTestWaitTests.m; sourceTree = "<group>"; };
 		A3EE531416F88AD8007706C6 /* AGWaitForAsyncTestHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGWaitForAsyncTestHelper.h; sourceTree = "<group>"; };
 		A3EE531516F88AD8007706C6 /* AGWaitForAsyncTestHelperTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGWaitForAsyncTestHelperTest.m; sourceTree = "<group>"; };
+		A3F77D2A16F8CD1900415B24 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; name = LICENSE; path = ../../LICENSE; sourceTree = "<group>"; };
+		A3F77D2B16F8CD1900415B24 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; name = README.md; path = ../../README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +135,8 @@
 				A3EE52EB16F87345007706C6 /* Default.png */,
 				A3EE52ED16F87345007706C6 /* Default@2x.png */,
 				A3EE52EF16F87345007706C6 /* Default-568h@2x.png */,
+				A3F77D2A16F8CD1900415B24 /* LICENSE */,
+				A3F77D2B16F8CD1900415B24 /* README.md */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
