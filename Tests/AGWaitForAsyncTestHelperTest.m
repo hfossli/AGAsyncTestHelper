@@ -222,7 +222,7 @@
         didWait = TRUE;
     });
     
-    WAIT_WHILE_NOT_EQUALS(value1, 2.0f, (NSTimeInterval)1.0, nil);
+    WAIT_WHILE_NOT_EQUALS(value1, 2.0f, (NSTimeInterval)1.0);
     STAssertTrue(didWait, nil);
 }
 
