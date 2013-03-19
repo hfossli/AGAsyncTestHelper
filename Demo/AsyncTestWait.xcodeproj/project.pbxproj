@@ -21,7 +21,7 @@
 		A3EE52FA16F87345007706C6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3EE52DB16F87345007706C6 /* Foundation.framework */; };
 		A3EE530216F87345007706C6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A3EE530016F87345007706C6 /* InfoPlist.strings */; };
 		A3EE530516F87345007706C6 /* AsyncTestWaitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A3EE530416F87345007706C6 /* AsyncTestWaitTests.m */; };
-		A3EE531716F88C13007706C6 /* WaitForAsyncTestHelperTest.m in Sources */ = {isa = PBXBuildFile; fileRef = A3EE531516F88AD8007706C6 /* WaitForAsyncTestHelperTest.m */; };
+		A3EE531716F88C13007706C6 /* AGWaitForAsyncTestHelperTest.m in Sources */ = {isa = PBXBuildFile; fileRef = A3EE531516F88AD8007706C6 /* AGWaitForAsyncTestHelperTest.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,8 +54,8 @@
 		A3EE530116F87345007706C6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A3EE530316F87345007706C6 /* AsyncTestWaitTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AsyncTestWaitTests.h; sourceTree = "<group>"; };
 		A3EE530416F87345007706C6 /* AsyncTestWaitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AsyncTestWaitTests.m; sourceTree = "<group>"; };
-		A3EE531416F88AD8007706C6 /* WaitForAsyncTestHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaitForAsyncTestHelper.h; sourceTree = "<group>"; };
-		A3EE531516F88AD8007706C6 /* WaitForAsyncTestHelperTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaitForAsyncTestHelperTest.m; sourceTree = "<group>"; };
+		A3EE531416F88AD8007706C6 /* AGWaitForAsyncTestHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGWaitForAsyncTestHelper.h; sourceTree = "<group>"; };
+		A3EE531516F88AD8007706C6 /* AGWaitForAsyncTestHelperTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGWaitForAsyncTestHelperTest.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,8 +159,8 @@
 		A3EE531316F88AD8007706C6 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				A3EE531416F88AD8007706C6 /* WaitForAsyncTestHelper.h */,
-				A3EE531516F88AD8007706C6 /* WaitForAsyncTestHelperTest.m */,
+				A3EE531416F88AD8007706C6 /* AGWaitForAsyncTestHelper.h */,
+				A3EE531516F88AD8007706C6 /* AGWaitForAsyncTestHelperTest.m */,
 			);
 			name = Source;
 			path = ../Source;
@@ -286,7 +286,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A3EE530516F87345007706C6 /* AsyncTestWaitTests.m in Sources */,
-				A3EE531716F88C13007706C6 /* WaitForAsyncTestHelperTest.m in Sources */,
+				A3EE531716F88C13007706C6 /* AGWaitForAsyncTestHelperTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -25,6 +25,19 @@
  * @param whileTrue Can be anything
  * @param seconds NSTimeInterval
  */
+#define AG_STALL_RUNLOPP_WHILE(whileTrue, limitInSeconds) ({\
+    NSDate *giveUpDate = [NSDate dateWithTimeIntervalSinceNow:limitInSeconds];\
+    while ((whileTrue) && [giveUpDate timeIntervalSinceNow] > 0)\
+    {\
+        NSDate *loopIntervalDate = [NSDate dateWithTimeIntervalSinceNow:0.01];\
+        [[NSRunLoop currentRunLoop] runUntilDate:loopIntervalDate];\
+    }\
+})
+
+/**
+ * @param whileTrue Can be anything
+ * @param seconds NSTimeInterval
+ */
 #define WAIT_WHILE(whileTrue, seconds)\
 ({\
     WAIT_WHILE_WITH_DESC(whileTrue, seconds, nil);\
@@ -47,7 +60,7 @@
     }\
     else\
     {\
-        _AG_STALL_RUNLOPP_WHILE(whileTrue, castedLimit);\
+        AG_STALL_RUNLOPP_WHILE(whileTrue, castedLimit);\
         if(whileTrue)\
         {\
             NSString *failString = _AG_CREATE_FAIL_STRING_2(conditionString, castedLimit, description, ##__VA_ARGS__);\
@@ -85,7 +98,7 @@
     }\
     else\
     {\
-        _AG_STALL_RUNLOPP_WHILE(value1 == value2, castedLimit);\
+        AG_STALL_RUNLOPP_WHILE(value1 == value2, castedLimit);\
         if(value1 == value2)\
         {\
             NSString *conditionString = _AG_VALUE_EQUALITY_FAIL_STRING(value1, @"should not be equal to", value2, 0);\
@@ -128,7 +141,7 @@
     }\
     else\
     {\
-        _AG_STALL_RUNLOPP_WHILE(STAbsoluteDifference(value1, value2) < accuracy, castedLimit);\
+        AG_STALL_RUNLOPP_WHILE(STAbsoluteDifference(value1, value2) < accuracy, castedLimit);\
         if(STAbsoluteDifference(value1, value2) < accuracy)\
         {\
             NSString *conditionString = _AG_VALUE_EQUALITY_FAIL_STRING(value1, @"should be equal to", value2, accuracy);\
@@ -167,7 +180,7 @@
     }\
     else\
     {\
-        _AG_STALL_RUNLOPP_WHILE(value1 != value2, castedLimit);\
+        AG_STALL_RUNLOPP_WHILE(value1 != value2, castedLimit);\
         if(value1 != value2)\
         {\
             NSString *conditionString = _AG_VALUE_EQUALITY_FAIL_STRING(value1, @"should not be equal to", value2, 0);\
@@ -201,15 +214,6 @@ static NSString * _AG_CREATE_FAIL_STRING_2(NSString *conditionString, NSTimeInte
 
 #define _AGISDifferentType(a1, a2) strcmp(@encode(__typeof__(a1)), @encode(__typeof__(a2))) != 0
 
-#define _AG_STALL_RUNLOPP_WHILE(whileTrue, limitInSeconds) ({\
-    NSDate *giveUpDate = [NSDate dateWithTimeIntervalSinceNow:limitInSeconds];\
-    while ((whileTrue) && [giveUpDate timeIntervalSinceNow] > 0)\
-    {\
-        NSDate *loopIntervalDate = [NSDate dateWithTimeIntervalSinceNow:0.01];\
-        [[NSRunLoop currentRunLoop] runUntilDate:loopIntervalDate];\
-    }\
-})
-
 #define _AGAssertSameType(a1, a2) {\
     if(_AGISDifferentType(a1, a2)) {\
         STFail(@"Type mismatch: %s is not same type as %s", #a1, #a2);\
@@ -223,15 +227,15 @@ static const char * printFormatTypeForObjCType(const char *type)
     else if(strcmp(type, @encode(int)) == 0)
         return "%i";
     else if(strcmp(type, @encode(unsigned int)) == 0)
-        return "%iu";
-    else if(strcmp(type, @encode(unsigned long)) == 0)
-        return "%li";
+        return "%u";
     else if(strcmp(type, @encode(long)) == 0)
         return "%li";
+    else if(strcmp(type, @encode(unsigned long)) == 0)
+        return "%lu";
     else if(strcmp(type, @encode(long long)) == 0)
         return "%lli";
     else if(strcmp(type, @encode(unsigned long long)) == 0)
-        return "%lli";
+        return "%llu";
     else if(strcmp(type, @encode(float)) == 0)
         return "%f";
     else if(strcmp(type, @encode(double)) == 0)

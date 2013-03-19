@@ -22,7 +22,7 @@
 // THE SOFTWARE.
 
 #import <SenTestingKit/SenTestingKit.h>
-#import "WaitForAsyncTestHelper.h"
+#import "AGWaitForAsyncTestHelper.h"
 
 @interface AGTestCaseDefinesTest : SenTestCase {
 @private
@@ -57,7 +57,7 @@
     STAssertFalse(_AGISDifferentType((int)2.0f, (int)2.0f), nil);
 }
 
-- (void)test_AG_STALL_RUNLOPP_WHILE
+- (void)testAG_STALL_RUNLOPP_WHILE
 {
     __block BOOL value = NO;
     
@@ -67,7 +67,7 @@
         value = TRUE;
     });
     
-    _AG_STALL_RUNLOPP_WHILE(!value, (NSTimeInterval)1.0);
+    AG_STALL_RUNLOPP_WHILE(!value, (NSTimeInterval)1.0);
     
     STAssertTrue(value, nil);
 }
@@ -109,22 +109,6 @@
     }
 }
 
-- (void)testWAIT_WHILE_WITH_DESC
-{
-    __block BOOL shouldWaitFurther = YES;
-    __block BOOL didWait = FALSE;
-    
-    double delayInSeconds = 0.1;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        shouldWaitFurther = NO;
-        didWait = TRUE;
-    });
-    
-    WAIT_WHILE_WITH_DESC(shouldWaitFurther, (NSTimeInterval)1.0, @"Test description %i", 12345);
-    STAssertTrue(didWait, nil);
-}
-
 - (void)testWAIT_WHILE_WITH
 {
     __block BOOL shouldWaitFurther = YES;
@@ -138,6 +122,22 @@
     });
     
     WAIT_WHILE(shouldWaitFurther, (NSTimeInterval)1.0);
+    STAssertTrue(didWait, nil);
+}
+
+- (void)testWAIT_WHILE_WITH_DESC
+{
+    __block BOOL shouldWaitFurther = YES;
+    __block BOOL didWait = FALSE;
+    
+    double delayInSeconds = 0.1;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        shouldWaitFurther = NO;
+        didWait = TRUE;
+    });
+    
+    WAIT_WHILE_WITH_DESC(shouldWaitFurther, (NSTimeInterval)1.0, @"Test description %i", 12345);
     STAssertTrue(didWait, nil);
 }
 
@@ -207,6 +207,22 @@
     });
     
     WAIT_WHILE_EQUALS_WITH_ACCURACY_WITH_DESC(value1, 2.0f, 0.001f, (NSTimeInterval)1.0, @"Test description %i", 12345);
+    STAssertTrue(didWait, nil);
+}
+
+- (void)testWAIT_WHILE_NOT_EQUALS
+{
+    __block CGFloat value1 = 1.0f;
+    __block BOOL didWait = FALSE;
+    
+    double delayInSeconds = 0.1;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        value1 = 2.0f;
+        didWait = TRUE;
+    });
+    
+    WAIT_WHILE_NOT_EQUALS(value1, 2.0f, (NSTimeInterval)1.0, nil);
     STAssertTrue(didWait, nil);
 }
 
