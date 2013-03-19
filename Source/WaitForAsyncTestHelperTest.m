@@ -67,7 +67,7 @@
         value = TRUE;
     });
     
-    _AG_STALL_RUNLOPP_WHILE(!value, 1.0);
+    _AG_STALL_RUNLOPP_WHILE(!value, (NSTimeInterval)1.0);
     
     STAssertTrue(value, nil);
 }
@@ -81,11 +81,14 @@
     
     {
         NSString *string = _AG_CREATE_FAIL_STRING_1(conditionString, @"Testdescription with param %f and another %i", 99.0f, 1000);
-        STAssertEqualObjects(string, @"Was already right before 'wait' on async operation. 2.00 should NOT be equal to 3.0. Testdescription with param 99.000000 and another 1000.", nil);
+        STAssertEqualObjects(string,
+                             @"Was already right before 'wait' on async operation. 2.00 should NOT be equal to 3.0. Testdescription with param 99.000000 and another 1000", nil);
+        
+
     }
     {
         NSString *string = _AG_CREATE_FAIL_STRING_1(conditionString, @"Testdescription without params");
-        STAssertEqualObjects(string, @"Was already right before 'wait' on async operation. 2.00 should NOT be equal to 3.0. Testdescription without params.", nil);
+        STAssertEqualObjects(string, @"Was already right before 'wait' on async operation. 2.00 should NOT be equal to 3.0. Testdescription without params", nil);
     }
 }
 
@@ -98,15 +101,15 @@
     
     {
         NSString *string = _AG_CREATE_FAIL_STRING_2(conditionString, 5.0, @"Testdescription with param %f and another %i", 99.0f, 1000);
-        STAssertEqualObjects(string, @"Spent too much time (5.0 seconds). 2.00 should NOT be equal to 3.0. Testdescription with param 99.000000 and another 1000.", nil);
+        STAssertEqualObjects(string, @"Spent too much time (5.00 seconds). 2.00 should NOT be equal to 3.0. Testdescription with param 99.000000 and another 1000", nil);
     }
     {
         NSString *string = _AG_CREATE_FAIL_STRING_2(conditionString, 5.0, @"Testdescription without params");
-        STAssertEqualObjects(string, @"Spent too much time (5.0 seconds). 2.00 should NOT be equal to 3.0. Testdescription without params.", nil);
+        STAssertEqualObjects(string, @"Spent too much time (5.00 seconds). 2.00 should NOT be equal to 3.0. Testdescription without params", nil);
     }
 }
 
-- (void)testWAIT_FOR_ASYNC_OPERATION_WHILE
+- (void)testWAIT_WHILE_WITH_DESC
 {
     __block BOOL shouldWaitFurther = YES;
     __block BOOL didWait = FALSE;
@@ -118,43 +121,64 @@
         didWait = TRUE;
     });
     
-    WAIT_FOR_ASYNC_OPERATION_WHILE(shouldWaitFurther, 0.2, @"There is a logical problem in WAIT_FOR_ASYNC_OPERATION_WHILE");
+    WAIT_WHILE_WITH_DESC(shouldWaitFurther, (NSTimeInterval)1.0, @"Test description %i", 12345);
     STAssertTrue(didWait, nil);
 }
 
-- (void)testWAIT_FOR_ASYNC_OPERATION
+- (void)testWAIT_WHILE_WITH
 {
-    asyncOperationCompleted = NO;
+    __block BOOL shouldWaitFurther = YES;
     __block BOOL didWait = FALSE;
     
     double delayInSeconds = 0.1;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        asyncOperationCompleted = YES;
+        shouldWaitFurther = NO;
         didWait = TRUE;
     });
     
-    WAIT_FOR_ASYNC_OPERATION(1.0f, @"There is a logical problem in WAIT_FOR_ASYNC_OPERATION");
+    WAIT_WHILE(shouldWaitFurther, (NSTimeInterval)1.0);
     STAssertTrue(didWait, nil);
 }
 
-- (void)testWAIT_FOR_ASYNC_OPERATION_2
+- (void)testWAIT_WHILE_EQUALS
 {
-    asyncOperationCompleted = NO;
+    __block CGFloat value = 2.0f;
     __block BOOL didWait = FALSE;
     
     double delayInSeconds = 0.1;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        asyncOperationCompleted = YES;
+        value = 1;
         didWait = TRUE;
     });
     
-    WAIT_FOR_ASYNC_OPERATION(1.0f, @"There is a logical problem in WAIT_FOR_ASYNC_OPERATION");
+    WAIT_WHILE_EQUALS(value, 2.0f, (NSTimeInterval)1.0);
     STAssertTrue(didWait, nil);
 }
 
-- (void)testWAIT_FOR_ASYNC_OPERATION_WHILE_EQUALS
+- (void)testWAIT_WHILE_EQUALS_WITH_DESC
+{
+    __block CGFloat value = 2.0f;
+    __block BOOL didWait = FALSE;
+    
+    double delayInSeconds = 0.1;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        value = 1;
+        didWait = TRUE;
+    });
+    
+    WAIT_WHILE_EQUALS_WITH_DESC(value, 2.0f, (NSTimeInterval)1.0, @"Test description %i", 12345);
+    STAssertTrue(didWait, nil);
+}
+
+- (float)testValue
+{
+    return 2.0f;
+}
+
+- (void)testWAIT_WHILE_EQUALS_WITH_ACCURACY
 {
     __block CGFloat value1 = 2.0f;
     __block BOOL didWait = FALSE;
@@ -166,11 +190,27 @@
         didWait = TRUE;
     });
     
-    WAIT_FOR_ASYNC_OPERATION_WHILE_EQUALS(value1, 2.0f, %.2f, 1.0f, @"There is a logical problem in WAIT_FOR_ASYNC_OPERATION_WHILE_EQUALS");
+    WAIT_WHILE_EQUALS_WITH_ACCURACY(value1, [self testValue], 0.001f, (NSTimeInterval)1.0);
     STAssertTrue(didWait, nil);
 }
 
-- (void)testWAIT_FOR_ASYNC_OPERATION_WHILE_NOT_EQUALS
+- (void)testWAIT_WHILE_EQUALS_WITH_ACCURACY_WITH_DESC
+{
+    __block CGFloat value1 = 2.0f;
+    __block BOOL didWait = FALSE;
+    
+    double delayInSeconds = 0.1;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        value1 = 1;
+        didWait = TRUE;
+    });
+    
+    WAIT_WHILE_EQUALS_WITH_ACCURACY_WITH_DESC(value1, 2.0f, 0.001f, (NSTimeInterval)1.0, @"Test description %i", 12345);
+    STAssertTrue(didWait, nil);
+}
+
+- (void)testWAIT_WHILE_NOT_EQUALS_WITH_DESC
 {
     __block CGFloat value1 = 1.0f;
     __block BOOL didWait = FALSE;
@@ -182,7 +222,7 @@
         didWait = TRUE;
     });
     
-    WAIT_FOR_ASYNC_OPERATION_WHILE_NOT_EQUALS(value1, 2.0f, %.2f, 1.0f, @"There is a logical problem in WAIT_FOR_ASYNC_OPERATION_WHILE_NOT_EQUALS");
+    WAIT_WHILE_NOT_EQUALS_WITH_DESC(value1, 2.0f, (NSTimeInterval)1.0, @"Test description %i", 12345);
     STAssertTrue(didWait, nil);
 }
 

@@ -21,6 +21,184 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+/**
+ * @param whileTrue Can be anything
+ * @param seconds NSTimeInterval
+ */
+#define WAIT_WHILE(whileTrue, seconds)\
+({\
+    WAIT_WHILE_WITH_DESC(whileTrue, seconds, nil);\
+})
+
+/**
+ * @param whileTrue Can be anything
+ * @param seconds NSTimeInterval
+ * @param description NSString format
+ * @param ... Arguments for description string format
+ */
+#define WAIT_WHILE_WITH_DESC(whileTrue, seconds, description, ...)\
+({\
+    NSTimeInterval castedLimit = seconds;\
+    NSString *conditionString = [NSString stringWithFormat:@"(%s) should NOT be true after async operation completed", #whileTrue];\
+    if(!(whileTrue))\
+    {\
+        NSString *failString = _AG_CREATE_FAIL_STRING_1(conditionString, description, ##__VA_ARGS__);\
+        STFail(failString);\
+    }\
+    else\
+    {\
+        _AG_STALL_RUNLOPP_WHILE(whileTrue, castedLimit);\
+        if(whileTrue)\
+        {\
+            NSString *failString = _AG_CREATE_FAIL_STRING_2(conditionString, castedLimit, description, ##__VA_ARGS__);\
+            STFail(failString);\
+        }\
+    }\
+})
+
+/**
+ * @param value1 Primitive value
+ * @param value2 Other primitive value (must be same type as 'value1')
+ * @param seconds NSTimeInterval
+ */
+#define WAIT_WHILE_EQUALS(value1, value2, limitInSeconds)\
+({\
+    WAIT_WHILE_EQUALS_WITH_DESC(value1, value2, limitInSeconds, nil);\
+})
+
+/**
+ * @param value1 Primitive value
+ * @param value2 Other primitive value (must be same type as 'value1')
+ * @param seconds NSTimeInterval
+ * @param description NSString format
+ * @param ... Arguments for description string format
+ */
+#define WAIT_WHILE_EQUALS_WITH_DESC(value1, value2, limitInSeconds, description, ...)\
+({\
+    _AGAssertSameType(value1, value2);\
+    NSTimeInterval castedLimit = limitInSeconds;\
+    \
+    if(value1 != value2)\
+    {\
+        NSString *failString = _AG_CREATE_FAIL_STRING_1(@"There is nothing to wait for. Values already equal.", description, ##__VA_ARGS__);\
+        STFail(failString);\
+    }\
+    else\
+    {\
+        _AG_STALL_RUNLOPP_WHILE(value1 == value2, castedLimit);\
+        if(value1 == value2)\
+        {\
+            NSString *conditionString = _AG_VALUE_EQUALITY_FAIL_STRING(value1, @"should not be equal to", value2, 0);\
+            NSString *failString = _AG_CREATE_FAIL_STRING_2(conditionString, castedLimit, description, ##__VA_ARGS__);\
+            STFail(failString);\
+        }\
+    }\
+})
+
+
+/**
+ * @param value1 Primitive value
+ * @param value2 Other primitive value (must be same type as 'value1')
+ * @param accuracy Primitive value
+ * @param seconds NSTimeInterval
+ */
+#define WAIT_WHILE_EQUALS_WITH_ACCURACY(value1, value2, accuracy, limitInSeconds)\
+({\
+    WAIT_WHILE_EQUALS_WITH_ACCURACY_WITH_DESC(value1, value2, accuracy, limitInSeconds, nil);\
+})
+
+/**
+ * @param value1 Primitive value
+ * @param value2 Other primitive value (must be same type as 'value1')
+ * @param accuracy Primitive value
+ * @param seconds NSTimeInterval
+ * @param description NSString format
+ * @param ... Arguments for description string format
+ */
+#define WAIT_WHILE_EQUALS_WITH_ACCURACY_WITH_DESC(value1, value2, accuracy, limitInSeconds, description, ...)\
+({\
+    _AGAssertSameType(value1, value2);\
+    _AGAssertSameType(value1, accuracy);\
+    NSTimeInterval castedLimit = limitInSeconds;\
+    \
+    if(STAbsoluteDifference(value1, value2) > accuracy)\
+    {\
+        NSString *failString = _AG_CREATE_FAIL_STRING_1(@"There is nothing to wait for. Values already different.", description, ##__VA_ARGS__);\
+        STFail(failString);\
+    }\
+    else\
+    {\
+        _AG_STALL_RUNLOPP_WHILE(STAbsoluteDifference(value1, value2) < accuracy, castedLimit);\
+        if(STAbsoluteDifference(value1, value2) < accuracy)\
+        {\
+            NSString *conditionString = _AG_VALUE_EQUALITY_FAIL_STRING(value1, @"should be equal to", value2, accuracy);\
+            NSString *failString = _AG_CREATE_FAIL_STRING_2(conditionString, castedLimit, description, ##__VA_ARGS__);\
+            STFail(failString);\
+        }\
+    }\
+})
+
+/**
+ * @param value Primitive value
+ * @param equalTo Other primitive value (must be same type as 'value1')
+ * @param seconds NSTimeInterval
+ */
+#define WAIT_WHILE_NOT_EQUALS(value, equalTo, limitInSeconds)\
+({\
+    WAIT_WHILE_NOT_EQUALS_WITH_DESC(value, equalTo, limitInSeconds, nil);\
+})
+
+/**
+ * @param value1 Primitive value
+ * @param value2 Other primitive value (must be same type as 'value1')
+ * @param seconds NSTimeInterval
+ * @param description NSString format
+ * @param ... Arguments for description string format
+ */
+#define WAIT_WHILE_NOT_EQUALS_WITH_DESC(value1, value2, limitInSeconds, description, ...)\
+({\
+    _AGAssertSameType(value1, value2);\
+    NSTimeInterval castedLimit = limitInSeconds;\
+    \
+    if(value1 == value2)\
+    {\
+        NSString *failString = _AG_CREATE_FAIL_STRING_1(@"There is nothing to wait for. Values already equal.", description, ##__VA_ARGS__);\
+        STFail(failString);\
+    }\
+    else\
+    {\
+        _AG_STALL_RUNLOPP_WHILE(value1 != value2, castedLimit);\
+        if(value1 != value2)\
+        {\
+            NSString *conditionString = _AG_VALUE_EQUALITY_FAIL_STRING(value1, @"should not be equal to", value2, 0);\
+            NSString *failString = _AG_CREATE_FAIL_STRING_2(conditionString, castedLimit, description, ##__VA_ARGS__);\
+            STFail(failString);\
+        }\
+    }\
+})
+
+static NSString * _AG_CREATE_FAIL_STRING_1(NSString *conditionString, NSString *description, ...) {
+    va_list args;
+    va_start(args, description);
+    
+    NSString *outputFormat = [NSString stringWithFormat:@"Was already right before 'wait' on async operation. %@. %@", conditionString, description];
+    NSString *outputString = [[NSString alloc] initWithFormat:outputFormat arguments:args];
+    va_end(args);
+
+    return outputString;
+}
+
+static NSString * _AG_CREATE_FAIL_STRING_2(NSString *conditionString, NSTimeInterval seconds, NSString *description, ...) {
+    va_list args;
+    va_start(args, description);
+    
+    NSString *outputFormat = [NSString stringWithFormat:@"Spent too much time (%.2f seconds). %@. %@", (NSTimeInterval) seconds, conditionString, description];
+    NSString *outputString = [[NSString alloc] initWithFormat:outputFormat arguments:args];
+    va_end(args);
+    
+    return outputString;
+}
+
 #define _AGISDifferentType(a1, a2) strcmp(@encode(__typeof__(a1)), @encode(__typeof__(a2))) != 0
 
 #define _AG_STALL_RUNLOPP_WHILE(whileTrue, limitInSeconds) ({\
@@ -38,107 +216,50 @@
     }\
 }
 
-static NSString * _AG_CREATE_FAIL_STRING_1(NSString *conditionString, NSString *description, ...) {
-    va_list args;
-    va_start(args, description);
-    
-    NSString *outputFormat = [NSString stringWithFormat:@"Was already right before 'wait' on async operation. %@. %@.", conditionString, description];
-    NSString *outputString = [[NSString alloc] initWithFormat:outputFormat arguments:args];
-    va_end(args);
-
-    return outputString;
+static const char * printFormatTypeForObjCType(const char *type)
+{
+    if(strcmp(type, @encode(BOOL)) == 0)
+        return "%i";
+    else if(strcmp(type, @encode(int)) == 0)
+        return "%i";
+    else if(strcmp(type, @encode(unsigned int)) == 0)
+        return "%iu";
+    else if(strcmp(type, @encode(unsigned long)) == 0)
+        return "%li";
+    else if(strcmp(type, @encode(long)) == 0)
+        return "%li";
+    else if(strcmp(type, @encode(long long)) == 0)
+        return "%lli";
+    else if(strcmp(type, @encode(unsigned long long)) == 0)
+        return "%lli";
+    else if(strcmp(type, @encode(float)) == 0)
+        return "%f";
+    else if(strcmp(type, @encode(double)) == 0)
+        return "%d";
+    else
+        return "%i";
 }
 
-static NSString * _AG_CREATE_FAIL_STRING_2(NSString *conditionString, NSTimeInterval seconds, NSString *description, ...) {
-    va_list args;
-    va_start(args, description);
-    
-    NSString *outputFormat = [NSString stringWithFormat:@"Spent too much time (%.1f seconds). %@. %@.", (NSTimeInterval) seconds, conditionString, description];
-    NSString *outputString = [[NSString alloc] initWithFormat:outputFormat arguments:args];
-    va_end(args);
-    
-    return outputString;
-}
+#define _AG_PRIMITIVE_AS_STRING(value) \
+({\
+    const char *valueType = @encode(__typeof__(value));\
+    NSString *format = [NSString stringWithFormat:@"%s", printFormatTypeForObjCType(valueType)];\
+    NSString *valueAsString = [NSString stringWithFormat:format, value];\
+    valueAsString;\
+})
 
-#define WAIT_FOR_ASYNC_OPERATION(limitInSeconds, description, ...)\
-{\
-    NSTimeInterval castedLimit = limitInSeconds;\
-    NSString *descriptionString = description == nil ? @"" : [NSString stringWithFormat:description, ##__VA_ARGS__];\
-    if(asyncOperationCompleted)\
-    {\
-        STFail([NSString stringWithFormat:@"asyncOperationCompleted == TRUE before wait!. %@", descriptionString]);\
+#define _AG_VALUE_EQUALITY_FAIL_STRING(value1, glue, value2, accuracy) \
+({\
+    NSString *stringValue1 = _AG_PRIMITIVE_AS_STRING(value1);\
+    NSString *stringValue2 = _AG_PRIMITIVE_AS_STRING(value2);\
+    \
+    NSString *reason;\
+    if (accuracy) {\
+        reason = [NSString stringWithFormat:@"'%s' (%@) %@ '%s' (%@).", #value1, stringValue1, glue, #value2, stringValue2];\
+    } else {\
+        NSString *stringAccuracy = _AG_PRIMITIVE_AS_STRING(accuracy);\
+        reason = [NSString stringWithFormat:@"'%s' (%@) %@ '%s' (%@) +/-'%@'.", #value1, stringValue1, glue, #value2, stringValue2, stringAccuracy];\
     }\
-    else\
-    {\
-        _AG_STALL_RUNLOPP_WHILE(!asyncOperationCompleted, castedLimit);\
-        if(!asyncOperationCompleted)\
-        {\
-            STFail([NSString stringWithFormat:@"Spent too much time (%.1f seconds).. %@", castedLimit, descriptionString]);\
-        }\
-    }\
-}
-
-#define WAIT_FOR_ASYNC_OPERATION_WHILE_EQUALS(value, equalTo, typeSpeficier, limitInSeconds, description, ...)\
-{\
-    _AGAssertSameType(value, equalTo);\
-    NSTimeInterval castedLimit = limitInSeconds;\
-    NSString *conditionFormat = [NSString stringWithFormat:@"%s should NOT be equal to %s", #typeSpeficier, #typeSpeficier];\
-    NSString *conditionString = [NSString stringWithFormat:conditionFormat, value, equalTo];\
-    if(value != equalTo)\
-    {\
-        NSString *failString = _AG_CREATE_FAIL_STRING_1(conditionString, description, ##__VA_ARGS__);\
-        STFail(failString);\
-    }\
-    else\
-    {\
-        _AG_STALL_RUNLOPP_WHILE(value == equalTo, castedLimit);\
-        if(value == equalTo)\
-        {\
-            NSString *failString = _AG_CREATE_FAIL_STRING_2(conditionString, castedLimit, description, ##__VA_ARGS__);\
-            STFail(failString);\
-        }\
-    }\
-}
-
-#define WAIT_FOR_ASYNC_OPERATION_WHILE_NOT_EQUALS(value, equalTo, typeSpeficier, limitInSeconds, description, ...)\
-{\
-    _AGAssertSameType(value, equalTo);\
-    NSTimeInterval castedLimit = limitInSeconds;\
-    NSString *conditionFormat = [NSString stringWithFormat:@"%s should be equal to %s", #typeSpeficier, #typeSpeficier];\
-    NSString *conditionString = [NSString stringWithFormat:conditionFormat, value, equalTo];\
-    if(value == equalTo)\
-    {\
-        NSString *failString = _AG_CREATE_FAIL_STRING_1(conditionString, description, ##__VA_ARGS__);\
-        STFail(failString);\
-    }\
-    else\
-    {\
-        _AG_STALL_RUNLOPP_WHILE(value != equalTo, castedLimit);\
-        if(value != equalTo)\
-        {\
-            NSString *failString = _AG_CREATE_FAIL_STRING_2(conditionString, castedLimit, description, ##__VA_ARGS__);\
-            STFail(failString);\
-        }\
-    }\
-}
-
-#define WAIT_FOR_ASYNC_OPERATION_WHILE(whileTrue, seconds, description, ...)\
-{\
-    NSTimeInterval castedLimit = seconds;\
-    NSString *conditionString = [NSString stringWithFormat:@"(%s) should NOT be true after async operation completed", #whileTrue];\
-    if(!(whileTrue))\
-    {\
-        NSString *failString = _AG_CREATE_FAIL_STRING_1(conditionString, description, ##__VA_ARGS__);\
-        STFail(failString);\
-    }\
-    else\
-    {\
-        _AG_STALL_RUNLOPP_WHILE(whileTrue, castedLimit);\
-        if(whileTrue)\
-        {\
-            NSString *failString = _AG_CREATE_FAIL_STRING_2(conditionString, castedLimit, description, ##__VA_ARGS__);\
-            STFail(failString);\
-        }\
-    }\
-}
+    reason;\
+})
 
