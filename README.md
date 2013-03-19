@@ -51,6 +51,6 @@ Most basic
 Cocoa pods
 -------
     
-It is added to the Cocoa Pods public repository as `WaitForAsyncTestHelper`.
+Not yet added. 
 
 [![Agens | Digital craftsmanship](http://static.agens.no/images/agens_logo_w_slogan_avenir_small.png)](http://agens.no/)
