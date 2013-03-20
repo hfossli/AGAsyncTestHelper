@@ -27,7 +27,7 @@ Most basic
     
     WAIT_WHILE(!jobDone, 0.2); // stalls runloop until jobDone is true
 
-`WAIT_WHILE`will stall current runloop for givven timeperiod. It is possible to do job on the main thread and so on.. Like in this silly example
+`WAIT_WHILE` will stall current runloop for 0.2 seconds and throw an STFail if exceeding that 0.2 seconds. It is possible to do job on the main thread and so on.. Like in this silly example
 
 
     __block BOOL jobDone = NO;
@@ -45,7 +45,7 @@ Most basic
         });
     }];
     
-    WAIT_WHILE(!jobDone, 0.2); 
+    WAIT_WHILE(!jobDone, 0.2); // stalls runloop until jobDone is true
 
 
 Cocoa pods
