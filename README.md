@@ -51,6 +51,6 @@ Most basic
 Cocoa pods
 -------
     
-Not yet added. 
+Currently there's a pull request to pods under the name 'AGWaitForAsyncTestHelper'.
 
 [![Agens | Digital craftsmanship](http://static.agens.no/images/agens_logo_w_slogan_avenir_small.png)](http://agens.no/)
