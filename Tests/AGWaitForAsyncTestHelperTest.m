@@ -49,12 +49,12 @@
 #pragma mark - Tests
 
 
-- (void)test_AGAssertSameType
+- (void)testAGWWAssertSameType
 {
-    STAssertTrue(_AGISDifferentType(2, 2.0f), nil);
-    STAssertTrue(_AGISDifferentType(2.0, 2.0f), nil);
-    STAssertFalse(_AGISDifferentType(2.0f, 2.0f), nil);
-    STAssertFalse(_AGISDifferentType((int)2.0f, (int)2.0f), nil);
+    STAssertTrue(AGWWISDifferentType(2, 2.0f), nil);
+    STAssertTrue(AGWWISDifferentType(2.0, 2.0f), nil);
+    STAssertFalse(AGWWISDifferentType(2.0f, 2.0f), nil);
+    STAssertFalse(AGWWISDifferentType((int)2.0f, (int)2.0f), nil);
 }
 
 - (void)testAG_STALL_RUNLOPP_WHILE
@@ -72,7 +72,7 @@
     STAssertTrue(value, nil);
 }
 
-- (void)test_AG_CREATE_FAIL_STRING_1
+- (void)testAGWW_CREATE_FAIL_STRING_1
 {
     float value = 2.0f;
     float equalTo = 3.0f;
@@ -80,19 +80,19 @@
     NSString *conditionString = [NSString stringWithFormat:conditionFormat, value, equalTo];
     
     {
-        NSString *string = _AG_CREATE_FAIL_STRING_1(conditionString, @"Testdescription with param %f and another %i", 99.0f, 1000);
+        NSString *string = AGWW_CREATE_FAIL_STRING_1(conditionString, @"Testdescription with param %f and another %i", 99.0f, 1000);
         STAssertEqualObjects(string,
                              @"Was already right before 'wait' on async operation. 2.00 should NOT be equal to 3.0. Testdescription with param 99.000000 and another 1000", nil);
         
 
     }
     {
-        NSString *string = _AG_CREATE_FAIL_STRING_1(conditionString, @"Testdescription without params");
+        NSString *string = AGWW_CREATE_FAIL_STRING_1(conditionString, @"Testdescription without params");
         STAssertEqualObjects(string, @"Was already right before 'wait' on async operation. 2.00 should NOT be equal to 3.0. Testdescription without params", nil);
     }
 }
 
-- (void)test_AG_CREATE_FAIL_STRING_2
+- (void)testAGWW_CREATE_FAIL_STRING_2
 {
     float value = 2.0f;
     float equalTo = 3.0f;
@@ -100,11 +100,11 @@
     NSString *conditionString = [NSString stringWithFormat:conditionFormat, value, equalTo];
     
     {
-        NSString *string = _AG_CREATE_FAIL_STRING_2(conditionString, 5.0, @"Testdescription with param %f and another %i", 99.0f, 1000);
+        NSString *string = AGWW_CREATE_FAIL_STRING_2(conditionString, 5.0, @"Testdescription with param %f and another %i", 99.0f, 1000);
         STAssertEqualObjects(string, @"Spent too much time (5.00 seconds). 2.00 should NOT be equal to 3.0. Testdescription with param 99.000000 and another 1000", nil);
     }
     {
-        NSString *string = _AG_CREATE_FAIL_STRING_2(conditionString, 5.0, @"Testdescription without params");
+        NSString *string = AGWW_CREATE_FAIL_STRING_2(conditionString, 5.0, @"Testdescription without params");
         STAssertEqualObjects(string, @"Spent too much time (5.00 seconds). 2.00 should NOT be equal to 3.0. Testdescription without params", nil);
     }
 }
