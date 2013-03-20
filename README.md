@@ -1,6 +1,6 @@
 #WaitForAsyncTestHelper
 
-C Macro to wait for any async test and get an STFail in your test if it exceeds time limit. `WAIT_WHILE(whileTrue, limitInSeconds);`
+C Macro to wait for any async test and get an STFail() in your test if it exceeds time limit. `WAIT_WHILE(whileTrue, limitInSeconds);`
 
 ###Current macros
      
