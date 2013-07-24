@@ -255,6 +255,9 @@ static const char * printFormatTypeForObjCType(const char *type)
         return "%i";
 }
 
+// TODO: should be replaced with
+// https://github.com/JensAyton/JAValueToString
+
 #define AGWW_PRIMITIVE_AS_STRING(value) \
 ({\
     const char *valueType = @encode(__typeof__(value));\
