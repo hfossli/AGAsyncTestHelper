@@ -4,15 +4,15 @@ C Macro to wait for any async test and get an STFail() in your test if it exceed
 
 ###Current macros
      
-    WAIT_WHILE(whileTrue, limitInSeconds)
-    WAIT_WHILE_WITH_DESC(whileTrue, seconds, description, ...)
+    WAIT_WHILE(expressionIsTrue, limitInSeconds)
+    WAIT_WHILE_WITH_DESC(expressionIsTrue, seconds, description, ...)
     WAIT_WHILE_EQUALS(value1, value2, limitInSeconds)
     WAIT_WHILE_EQUALS_WITH_DESC(value1, value2, limitInSeconds, description, ...)
     WAIT_WHILE_EQUALS_WITH_ACCURACY(value1, value2, accuracy, limitInSeconds)
     WAIT_WHILE_EQUALS_WITH_ACCURACY_WITH_DESC(value1, value2, accuracy, limitInSeconds, description, ...)
-    WAIT_WHILE_NOT_EQUALS(value, equalTo, limitInSeconds)
+    WAIT_WHILE_NOT_EQUALS(value, value2, limitInSeconds)
     WAIT_WHILE_NOT_EQUALS_WITH_DESC(value1, value2, limitInSeconds, description, ...)
-    AG_STALL_RUNLOPP_WHILE(whileTrue, limitInSeconds)
+    AG_STALL_RUNLOPP_WHILE(expressionIsTrue, limitInSeconds)
 
 Examples
 ------
