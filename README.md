@@ -59,6 +59,6 @@ This library or bundle enables you to do async test operations with asynchronous
 
 ### Cocoa pods
     
-Available as 'AGAsyncTestHelper'.
+It will be available soon as `AGAsyncTestHelper`. Meanwhile you can use the old spec `AGWaitForAsyncTestHelper`
 
 [![Agens | Digital craftsmanship](http://static.agens.no/images/agens_logo_w_slogan_avenir_small.png)](http://agens.no/)
