@@ -48,6 +48,7 @@ You've got several alternatives like
 - [SenAsyncTestCase](https://github.com/akisute/SenAsyncTestCase)
 - [AssertEventually](https://gist.github.com/lukeredpath/506353/)
 - [Kiwi](https://github.com/allending/Kiwi/wiki/Asynchronous-Testing)
+- [SenTestCase+SRTAdditions](https://github.com/square/SocketRocket/blob/master/SRWebSocketTests/SenTestCase+SRTAdditions.h)
 
 If you've got other alternatives which should be listed here please let me know.
 
