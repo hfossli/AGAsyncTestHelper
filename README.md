@@ -49,6 +49,8 @@ You've got several alternatives like
 - [AssertEventually](https://gist.github.com/lukeredpath/506353/)
 - [Kiwi](https://github.com/allending/Kiwi/wiki/Asynchronous-Testing)
 
+If you've got other alternatives which should be listed here please let me know.
+
 There is also a great thread on stack overflow http://stackoverflow.com/questions/4114083/ios-tests-specs-tdd-bdd-and-integration-acceptance-testing
 
 ### Extensive description
