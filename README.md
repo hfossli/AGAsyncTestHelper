@@ -1,8 +1,35 @@
-#AGAsyncTestHelper
+# AGAsyncTestHelper
 
-C Macro to wait for any async test and get an STFail() in your test if it exceeds time limit. `WAIT_WHILE(whileTrue, limitInSeconds);`
+C Macro for writing unit tests with asynchronous operations. Works perfectly with SenTestingKit for iOS / Mac. 
 
-###Current macros
+### Example
+
+    - (void)testDoSomeOperation
+    {
+        __block BOOL jobDone = NO;
+    
+        [Manager doSomeOperationOnDone:^(id data) {
+            jobDone = YES; 
+        }];
+    
+        WAIT_WHILE(!jobDone, 2.0);
+    }
+
+`WAIT_WHILE()` will stall current runloop while `!jobDone` is `TRUE` and throw an `STFail` if exceeding time limit (2.0 seconds)
+
+### Advantages
+
+- Minimum code
+- Error thrown *in the test*. Since it is based on macro's the exception will not be thrown in some 3rd party implementation file further down the stack
+- Small library
+- Works perfectly with SenTestingKit
+- No known bugs or issues
+
+### Overview
+
+The macro will evaluate the expression while the expression is true **or** the time limit is reached.
+
+These macros will generate STFail() if time limit is reached.
      
     WAIT_WHILE(expressionIsTrue, limitInSeconds)
     WAIT_WHILE_WITH_DESC(expressionIsTrue, seconds, description, ...)
@@ -14,43 +41,19 @@ C Macro to wait for any async test and get an STFail() in your test if it exceed
     WAIT_WHILE_NOT_EQUALS_WITH_DESC(value1, value2, limitInSeconds, description, ...)
     AG_STALL_RUNLOPP_WHILE(expressionIsTrue, limitInSeconds)
 
-Examples
-------
+### Alternatives
 
-Most basic
+You've got several alternatives like
 
-    __block BOOL jobDone = NO;
+- [SenAsyncTestCase](https://github.com/akisute/SenAsyncTestCase)
+- [AssertEventually](https://gist.github.com/lukeredpath/506353/)
+- [Kiwi](https://github.com/allending/Kiwi/wiki/Asynchronous-Testing)
+
+There is also a great thread on stack overflow http://stackoverflow.com/questions/4114083/ios-tests-specs-tdd-bdd-and-integration-acceptance-testing
+
+
+### Cocoa pods
     
-    [CEO asyncFireAllEmployes:^{
-        jobDone = YES; 
-    }];
-    
-    WAIT_WHILE(!jobDone, 0.2); // stalls runloop until jobDone is true
-
-`WAIT_WHILE` will stall current runloop for 0.2 seconds and throw an STFail if exceeding that 0.2 seconds. It is possible to do job on the main thread and so on.. Like in this silly example
-
-
-    __block BOOL jobDone = NO;
-    
-    [CEO asyncFireAllEmployes:^{
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            int value = 2 + 2;
-            [you tellWife2Plus2Is:4];
-            
-            [CEO tellJanitorToStopBuggingYouAsync:^{
-                jobDone = YES;
-            }];
-        });
-    }];
-    
-    WAIT_WHILE(!jobDone, 0.2); // stalls runloop until jobDone is true
-
-
-Cocoa pods
--------
-    
-Available as 'AGWaitForAsyncTestHelper'.
+Available as 'AGAsyncTestHelper'.
 
 [![Agens | Digital craftsmanship](http://static.agens.no/images/agens_logo_w_slogan_avenir_small.png)](http://agens.no/)
