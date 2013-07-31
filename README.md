@@ -1,6 +1,6 @@
 # AGAsyncTestHelper
 
-C Macro for writing unit tests with asynchronous operations. Works perfectly with SenTestingKit for iOS / Mac. 
+C Macro for writing unit tests with asynchronous operations. Works perfectly with SenTestingKit!
 
 ### Example
 
