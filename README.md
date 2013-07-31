@@ -51,6 +51,9 @@ You've got several alternatives like
 
 There is also a great thread on stack overflow http://stackoverflow.com/questions/4114083/ios-tests-specs-tdd-bdd-and-integration-acceptance-testing
 
+### Extensive description
+
+This library or bundle enables you to do async test operations with asynchronous callbacks in your SenTestCase. Works with GCD (Grand Central Dispatch) and regular delegate callbacks. 
 
 ### Cocoa pods
     
