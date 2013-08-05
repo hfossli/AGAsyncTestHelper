@@ -60,6 +60,6 @@ This library or bundle enables you to do async test operations with asynchronous
 
 ### Cocoa pods
     
-It's available soon as `AGAsyncTestHelper`.
+It's available as `AGAsyncTestHelper`.
 
 [![Agens | Digital craftsmanship](http://static.agens.no/images/agens_logo_w_slogan_avenir_small.png)](http://agens.no/)
