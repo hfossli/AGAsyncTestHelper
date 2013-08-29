@@ -2,7 +2,7 @@
 
 C Macro for writing unit tests with asynchronous operations. Works perfectly with SenTestingKit!
 
-### Example
+### Example blocks
 
     - (void)testDoSomeOperation
     {
@@ -16,6 +16,23 @@ C Macro for writing unit tests with asynchronous operations. Works perfectly wit
     }
 
 `WAIT_WHILE()` will stall current runloop while `!jobDone` is `TRUE` and throw an `STFail` if exceeding time limit (2.0 seconds)
+
+
+### Example plain callback / delegate
+
+    - (void)testDoSomeOperation
+    {
+        [Manager doSomeOperationOnDoneTellTarget:self selector:@selector(someOperationDone)];
+    
+        WAIT_WHILE(!self.jobDone, 2.0);
+    }
+    
+    - (void)someOperationDone
+    {
+        self.jobDone = YES;
+    }
+
+`WAIT_WHILE()` will stall current runloop while `!self.jobDone` is `TRUE` and throw an `STFail` if exceeding time limit (2.0 seconds)
 
 ### Advantages
 
