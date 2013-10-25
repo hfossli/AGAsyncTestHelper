@@ -31,6 +31,7 @@
 # define AGWW_AUTORELEASE(xx)       [xx autorelease]
 #endif
 
+#define AGAbsoluteDifference(left,right) (MAX(left,right)-MIN(left,right))
 
 /**
  * @param whileTrue Can be anything
@@ -67,7 +68,7 @@
     if(!(whileTrue))\
     {\
         NSString *failString = AGWW_CREATE_FAIL_STRING_1(conditionString, description, ##__VA_ARGS__);\
-        STFail(failString);\
+        XCTFail(@"%@", failString);\
     }\
     else\
     {\
@@ -75,7 +76,7 @@
         if(whileTrue)\
         {\
             NSString *failString = AGWW_CREATE_FAIL_STRING_2(conditionString, castedLimit, description, ##__VA_ARGS__);\
-            STFail(failString);\
+            XCTFail(@"%@", failString);\
         }\
     }\
 })
@@ -105,7 +106,7 @@
     if(value1 != value2)\
     {\
         NSString *failString = AGWW_CREATE_FAIL_STRING_1(@"There is nothing to wait for. Values already equal.", description, ##__VA_ARGS__);\
-        STFail(failString);\
+        XCTFail(@"%@", failString);\
     }\
     else\
     {\
@@ -114,7 +115,7 @@
         {\
             NSString *conditionString = AGWW_VALUE_EQUALITY_FAIL_STRING(value1, @"should not be equal to", value2, 0);\
             NSString *failString = AGWW_CREATE_FAIL_STRING_2(conditionString, castedLimit, description, ##__VA_ARGS__);\
-            STFail(failString);\
+            XCTFail(@"%@", failString);\
         }\
     }\
 })
@@ -145,19 +146,19 @@
     AGWWAssertSameType(value1, accuracy);\
     NSTimeInterval castedLimit = limitInSeconds;\
     \
-    if(STAbsoluteDifference(value1, value2) > accuracy)\
+    if(AGAbsoluteDifference(value1, value2) > accuracy)\
     {\
         NSString *failString = AGWW_CREATE_FAIL_STRING_1(@"There is nothing to wait for. Values already different.", description, ##__VA_ARGS__);\
-        STFail(failString);\
+        XCTFail(@"%@", failString);\
     }\
     else\
     {\
-        AG_STALL_RUNLOPP_WHILE(STAbsoluteDifference(value1, value2) < accuracy, castedLimit);\
-        if(STAbsoluteDifference(value1, value2) < accuracy)\
+        AG_STALL_RUNLOPP_WHILE(AGAbsoluteDifference(value1, value2) < accuracy, castedLimit);\
+        if(AGAbsoluteDifference(value1, value2) < accuracy)\
         {\
             NSString *conditionString = AGWW_VALUE_EQUALITY_FAIL_STRING(value1, @"should be equal to", value2, accuracy);\
             NSString *failString = AGWW_CREATE_FAIL_STRING_2(conditionString, castedLimit, description, ##__VA_ARGS__);\
-            STFail(failString);\
+            XCTFail(@"%@", failString);\
         }\
     }\
 })
@@ -187,7 +188,7 @@
     if(value1 == value2)\
     {\
         NSString *failString = AGWW_CREATE_FAIL_STRING_1(@"There is nothing to wait for. Values already equal.", description, ##__VA_ARGS__);\
-        STFail(failString);\
+        XCTFail(@"%@", failString);\
     }\
     else\
     {\
@@ -196,7 +197,7 @@
         {\
             NSString *conditionString = AGWW_VALUE_EQUALITY_FAIL_STRING(value1, @"should not be equal to", value2, 0);\
             NSString *failString = AGWW_CREATE_FAIL_STRING_2(conditionString, castedLimit, description, ##__VA_ARGS__);\
-            STFail(failString);\
+            XCTFail(@"%@", failString);\
         }\
     }\
 })
@@ -227,7 +228,7 @@ static NSString * AGWW_CREATE_FAIL_STRING_2(NSString *conditionString, NSTimeInt
 
 #define AGWWAssertSameType(a1, a2) {\
     if(AGWWISDifferentType(a1, a2)) {\
-        STFail(@"Type mismatch: %s is not same type as %s", #a1, #a2);\
+        XCTFail(@"Type mismatch: %s is not same type as %s", #a1, #a2);\
     }\
 }
 

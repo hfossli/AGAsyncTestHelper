@@ -21,10 +21,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 #import "AGWaitForAsyncTestHelper.h"
 
-@interface AGTestCaseDefinesTest : SenTestCase {
+@interface AGTestCaseDefinesTest : XCTestCase {
 @private
     BOOL asyncOperationCompleted;
 }
@@ -51,10 +51,10 @@
 
 - (void)testAGWWAssertSameType
 {
-    STAssertTrue(AGWWISDifferentType(2, 2.0f), nil);
-    STAssertTrue(AGWWISDifferentType(2.0, 2.0f), nil);
-    STAssertFalse(AGWWISDifferentType(2.0f, 2.0f), nil);
-    STAssertFalse(AGWWISDifferentType((int)2.0f, (int)2.0f), nil);
+    XCTAssertTrue(AGWWISDifferentType(2, 2.0f));
+    XCTAssertTrue(AGWWISDifferentType(2.0, 2.0f));
+    XCTAssertFalse(AGWWISDifferentType(2.0f, 2.0f));
+    XCTAssertFalse(AGWWISDifferentType((int)2.0f, (int)2.0f));
 }
 
 - (void)testAG_STALL_RUNLOPP_WHILE
@@ -69,7 +69,7 @@
     
     AG_STALL_RUNLOPP_WHILE(!value, (NSTimeInterval)1.0);
     
-    STAssertTrue(value, nil);
+    XCTAssertTrue(value);
 }
 
 - (void)testAGWW_CREATE_FAIL_STRING_1
@@ -81,14 +81,14 @@
     
     {
         NSString *string = AGWW_CREATE_FAIL_STRING_1(conditionString, @"Testdescription with param %f and another %i", 99.0f, 1000);
-        STAssertEqualObjects(string,
-                             @"Was already right before 'wait' on async operation. 2.00 should NOT be equal to 3.0. Testdescription with param 99.000000 and another 1000", nil);
+        XCTAssertEqualObjects(string,
+                             @"Was already right before 'wait' on async operation. 2.00 should NOT be equal to 3.0. Testdescription with param 99.000000 and another 1000");
         
 
     }
     {
         NSString *string = AGWW_CREATE_FAIL_STRING_1(conditionString, @"Testdescription without params");
-        STAssertEqualObjects(string, @"Was already right before 'wait' on async operation. 2.00 should NOT be equal to 3.0. Testdescription without params", nil);
+        XCTAssertEqualObjects(string, @"Was already right before 'wait' on async operation. 2.00 should NOT be equal to 3.0. Testdescription without params");
     }
 }
 
@@ -101,11 +101,11 @@
     
     {
         NSString *string = AGWW_CREATE_FAIL_STRING_2(conditionString, 5.0, @"Testdescription with param %f and another %i", 99.0f, 1000);
-        STAssertEqualObjects(string, @"Spent too much time (5.00 seconds). 2.00 should NOT be equal to 3.0. Testdescription with param 99.000000 and another 1000", nil);
+        XCTAssertEqualObjects(string, @"Spent too much time (5.00 seconds). 2.00 should NOT be equal to 3.0. Testdescription with param 99.000000 and another 1000");
     }
     {
         NSString *string = AGWW_CREATE_FAIL_STRING_2(conditionString, 5.0, @"Testdescription without params");
-        STAssertEqualObjects(string, @"Spent too much time (5.00 seconds). 2.00 should NOT be equal to 3.0. Testdescription without params", nil);
+        XCTAssertEqualObjects(string, @"Spent too much time (5.00 seconds). 2.00 should NOT be equal to 3.0. Testdescription without params");
     }
 }
 
@@ -122,7 +122,7 @@
     });
     
     WAIT_WHILE(shouldWaitFurther, (NSTimeInterval)1.0);
-    STAssertTrue(didWait, nil);
+    XCTAssertTrue(didWait);
 }
 
 - (void)testWAIT_WHILE_WITH_DESC
@@ -138,7 +138,7 @@
     });
     
     WAIT_WHILE_WITH_DESC(shouldWaitFurther, (NSTimeInterval)1.0, @"Test description %i", 12345);
-    STAssertTrue(didWait, nil);
+    XCTAssertTrue(didWait);
 }
 
 - (void)testWAIT_WHILE_EQUALS
@@ -154,7 +154,7 @@
     });
     
     WAIT_WHILE_EQUALS(value, 2.0f, (NSTimeInterval)1.0);
-    STAssertTrue(didWait, nil);
+    XCTAssertTrue(didWait);
 }
 
 - (void)testWAIT_WHILE_EQUALS_WITH_DESC
@@ -170,7 +170,7 @@
     });
     
     WAIT_WHILE_EQUALS_WITH_DESC(value, 2.0f, (NSTimeInterval)1.0, @"Test description %i", 12345);
-    STAssertTrue(didWait, nil);
+    XCTAssertTrue(didWait);
 }
 
 - (float)testValue
@@ -191,7 +191,7 @@
     });
     
     WAIT_WHILE_EQUALS_WITH_ACCURACY(value1, [self testValue], 0.001f, (NSTimeInterval)1.0);
-    STAssertTrue(didWait, nil);
+    XCTAssertTrue(didWait);
 }
 
 - (void)testWAIT_WHILE_EQUALS_WITH_ACCURACY_WITH_DESC
@@ -207,7 +207,7 @@
     });
     
     WAIT_WHILE_EQUALS_WITH_ACCURACY_WITH_DESC(value1, 2.0f, 0.001f, (NSTimeInterval)1.0, @"Test description %i", 12345);
-    STAssertTrue(didWait, nil);
+    XCTAssertTrue(didWait);
 }
 
 - (void)testWAIT_WHILE_NOT_EQUALS
@@ -223,7 +223,7 @@
     });
     
     WAIT_WHILE_NOT_EQUALS(value1, 2.0f, (NSTimeInterval)1.0);
-    STAssertTrue(didWait, nil);
+    XCTAssertTrue(didWait);
 }
 
 - (void)testWAIT_WHILE_NOT_EQUALS_WITH_DESC
@@ -239,7 +239,7 @@
     });
     
     WAIT_WHILE_NOT_EQUALS_WITH_DESC(value1, 2.0f, (NSTimeInterval)1.0, @"Test description %i", 12345);
-    STAssertTrue(didWait, nil);
+    XCTAssertTrue(didWait);
 }
 
 @end
