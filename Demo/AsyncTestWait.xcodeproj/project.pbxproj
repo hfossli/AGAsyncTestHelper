@@ -16,7 +16,6 @@
 		A3EE52EC16F87345007706C6 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = A3EE52EB16F87345007706C6 /* Default.png */; };
 		A3EE52EE16F87345007706C6 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A3EE52ED16F87345007706C6 /* Default@2x.png */; };
 		A3EE52F016F87345007706C6 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A3EE52EF16F87345007706C6 /* Default-568h@2x.png */; };
-		A3EE52F816F87345007706C6 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3EE52F716F87345007706C6 /* SenTestingKit.framework */; };
 		A3EE52F916F87345007706C6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3EE52D916F87344007706C6 /* UIKit.framework */; };
 		A3EE52FA16F87345007706C6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3EE52DB16F87345007706C6 /* Foundation.framework */; };
 		A3EE530216F87345007706C6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A3EE530016F87345007706C6 /* InfoPlist.strings */; };
@@ -48,8 +47,7 @@
 		A3EE52EB16F87345007706C6 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		A3EE52ED16F87345007706C6 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		A3EE52EF16F87345007706C6 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		A3EE52F616F87345007706C6 /* AsyncTestWaitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AsyncTestWaitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A3EE52F716F87345007706C6 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		A3EE52F616F87345007706C6 /* AsyncTestWaitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AsyncTestWaitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3EE52FF16F87345007706C6 /* AsyncTestWaitTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AsyncTestWaitTests-Info.plist"; sourceTree = "<group>"; };
 		A3EE530116F87345007706C6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A3EE530316F87345007706C6 /* AsyncTestWaitTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AsyncTestWaitTests.h; sourceTree = "<group>"; };
@@ -75,7 +73,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A3EE52F816F87345007706C6 /* SenTestingKit.framework in Frameworks */,
 				A3EE52F916F87345007706C6 /* UIKit.framework in Frameworks */,
 				A3EE52FA16F87345007706C6 /* Foundation.framework in Frameworks */,
 			);
@@ -100,7 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				A3EE52D616F87344007706C6 /* AsyncTestWait.app */,
-				A3EE52F616F87345007706C6 /* AsyncTestWaitTests.octest */,
+				A3EE52F616F87345007706C6 /* AsyncTestWaitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -111,7 +108,6 @@
 				A3EE52D916F87344007706C6 /* UIKit.framework */,
 				A3EE52DB16F87345007706C6 /* Foundation.framework */,
 				A3EE52DD16F87345007706C6 /* CoreGraphics.framework */,
-				A3EE52F716F87345007706C6 /* SenTestingKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -206,7 +202,6 @@
 				A3EE52F116F87345007706C6 /* Sources */,
 				A3EE52F216F87345007706C6 /* Frameworks */,
 				A3EE52F316F87345007706C6 /* Resources */,
-				A3EE52F416F87345007706C6 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -215,8 +210,8 @@
 			);
 			name = AsyncTestWaitTests;
 			productName = AsyncTestWaitTests;
-			productReference = A3EE52F616F87345007706C6 /* AsyncTestWaitTests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productReference = A3EE52F616F87345007706C6 /* AsyncTestWaitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -267,22 +262,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		A3EE52F416F87345007706C6 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A3EE52D216F87344007706C6 /* Sources */ = {
@@ -426,7 +405,6 @@
 				INFOPLIST_FILE = "AsyncTestWaitTests/AsyncTestWaitTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
 		};
@@ -443,7 +421,6 @@
 				INFOPLIST_FILE = "AsyncTestWaitTests/AsyncTestWaitTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
 		};
