@@ -1,6 +1,6 @@
 # AGAsyncTestHelper
 
-C Macro for writing unit tests with asynchronous operations. Works perfectly with SenTestingKit!
+C Macro for writing unit tests with asynchronous operations. Works perfectly with the new XCTest framework! If you want to use SenTestingKit be sure to use tag `0.2.1`.
 
 ### Example blocks
 
