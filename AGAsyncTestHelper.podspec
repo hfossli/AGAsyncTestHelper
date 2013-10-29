@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = "AGAsyncTestHelper"
-  s.version = "0.2.1"
+  s.version = "0.2.2"
   s.summary = "Macro for writing unit tests with asynchronous operations."
   s.homepage = "https://github.com/hfossli/AGAsyncTestHelper"
   s.license = { :type => 'MIT', :file => 'LICENSE' }
