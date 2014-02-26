@@ -89,20 +89,35 @@
     }
 }
 
-- (void)testWAIT_WHILE
+- (void)testWAIT_WHILE_withCorrectValueAfterDelay
 {
-    __block BOOL shouldWaitFurther = YES;
+    __block BOOL shouldWait = YES;
     __block BOOL didWait = FALSE;
     
     double delayInSeconds = 0.1;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^(void){
-        shouldWaitFurther = NO;
+        shouldWait = NO;
         didWait = TRUE;
     });
     
-    WAIT_WHILE(shouldWaitFurther, (NSTimeInterval)1.0);
+    WAIT_WHILE(shouldWait, (NSTimeInterval)1.0);
     XCTAssertTrue(didWait);
+}
+
+- (void)testWAIT_WHILE_withCorrectInitialValue
+{
+    __block BOOL shouldWait = NO;
+    __block BOOL didWait = FALSE;
+
+    double delayInSeconds = 0.1;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^(void){
+        didWait = TRUE;
+    });
+
+    WAIT_WHILE(shouldWait, (NSTimeInterval)1.0);
+    XCTAssertFalse(didWait);
 }
 
 - (void)testWAIT_WHILE_WITH_DESC
