@@ -65,19 +65,11 @@
 ({\
     NSTimeInterval castedLimit = seconds;\
     NSString *conditionString = [NSString stringWithFormat:@"(%s) should NOT be true after async operation completed", #whileTrue];\
-    if(!(whileTrue))\
+    AG_STALL_RUNLOPP_WHILE(whileTrue, castedLimit);\
+    if(whileTrue)\
     {\
-        NSString *failString = AGWW_CREATE_FAIL_STRING_1(conditionString, description, ##__VA_ARGS__);\
+        NSString *failString = AGWW_CREATE_FAIL_STRING(conditionString, castedLimit, description, ##__VA_ARGS__);\
         XCTFail(@"%@", failString);\
-    }\
-    else\
-    {\
-        AG_STALL_RUNLOPP_WHILE(whileTrue, castedLimit);\
-        if(whileTrue)\
-        {\
-            NSString *failString = AGWW_CREATE_FAIL_STRING_2(conditionString, castedLimit, description, ##__VA_ARGS__);\
-            XCTFail(@"%@", failString);\
-        }\
     }\
 })
 
@@ -103,20 +95,12 @@
     AGWWAssertSameType(value1, value2);\
     NSTimeInterval castedLimit = limitInSeconds;\
     \
-    if(value1 != value2)\
+    AG_STALL_RUNLOPP_WHILE(value1 == value2, castedLimit);\
+    if(value1 == value2)\
     {\
-        NSString *failString = AGWW_CREATE_FAIL_STRING_1(@"There is nothing to wait for. Values already equal.", description, ##__VA_ARGS__);\
+        NSString *conditionString = AGWW_VALUE_EQUALITY_FAIL_STRING(value1, @"should not be equal to", value2, 0);\
+        NSString *failString = AGWW_CREATE_FAIL_STRING(conditionString, castedLimit, description, ##__VA_ARGS__);\
         XCTFail(@"%@", failString);\
-    }\
-    else\
-    {\
-        AG_STALL_RUNLOPP_WHILE(value1 == value2, castedLimit);\
-        if(value1 == value2)\
-        {\
-            NSString *conditionString = AGWW_VALUE_EQUALITY_FAIL_STRING(value1, @"should not be equal to", value2, 0);\
-            NSString *failString = AGWW_CREATE_FAIL_STRING_2(conditionString, castedLimit, description, ##__VA_ARGS__);\
-            XCTFail(@"%@", failString);\
-        }\
     }\
 })
 
@@ -146,20 +130,12 @@
     AGWWAssertSameType(value1, accuracy);\
     NSTimeInterval castedLimit = limitInSeconds;\
     \
-    if(AGAbsoluteDifference(value1, value2) > accuracy)\
+    AG_STALL_RUNLOPP_WHILE(AGAbsoluteDifference(value1, value2) < accuracy, castedLimit);\
+    if(AGAbsoluteDifference(value1, value2) < accuracy)\
     {\
-        NSString *failString = AGWW_CREATE_FAIL_STRING_1(@"There is nothing to wait for. Values already different.", description, ##__VA_ARGS__);\
+        NSString *conditionString = AGWW_VALUE_EQUALITY_FAIL_STRING(value1, @"should be equal to", value2, accuracy);\
+        NSString *failString = AGWW_CREATE_FAIL_STRING(conditionString, castedLimit, description, ##__VA_ARGS__);\
         XCTFail(@"%@", failString);\
-    }\
-    else\
-    {\
-        AG_STALL_RUNLOPP_WHILE(AGAbsoluteDifference(value1, value2) < accuracy, castedLimit);\
-        if(AGAbsoluteDifference(value1, value2) < accuracy)\
-        {\
-            NSString *conditionString = AGWW_VALUE_EQUALITY_FAIL_STRING(value1, @"should be equal to", value2, accuracy);\
-            NSString *failString = AGWW_CREATE_FAIL_STRING_2(conditionString, castedLimit, description, ##__VA_ARGS__);\
-            XCTFail(@"%@", failString);\
-        }\
     }\
 })
 
@@ -185,35 +161,16 @@
     AGWWAssertSameType(value1, value2);\
     NSTimeInterval castedLimit = limitInSeconds;\
     \
-    if(value1 == value2)\
+    AG_STALL_RUNLOPP_WHILE(value1 != value2, castedLimit);\
+    if(value1 != value2)\
     {\
-        NSString *failString = AGWW_CREATE_FAIL_STRING_1(@"There is nothing to wait for. Values already equal.", description, ##__VA_ARGS__);\
+        NSString *conditionString = AGWW_VALUE_EQUALITY_FAIL_STRING(value1, @"should not be equal to", value2, 0);\
+        NSString *failString = AGWW_CREATE_FAIL_STRING(conditionString, castedLimit, description, ##__VA_ARGS__);\
         XCTFail(@"%@", failString);\
-    }\
-    else\
-    {\
-        AG_STALL_RUNLOPP_WHILE(value1 != value2, castedLimit);\
-        if(value1 != value2)\
-        {\
-            NSString *conditionString = AGWW_VALUE_EQUALITY_FAIL_STRING(value1, @"should not be equal to", value2, 0);\
-            NSString *failString = AGWW_CREATE_FAIL_STRING_2(conditionString, castedLimit, description, ##__VA_ARGS__);\
-            XCTFail(@"%@", failString);\
-        }\
     }\
 })
 
-static NSString * AGWW_CREATE_FAIL_STRING_1(NSString *conditionString, NSString *description, ...) {
-    va_list args;
-    va_start(args, description);
-    
-    NSString *outputFormat = [NSString stringWithFormat:@"Was already right before 'wait' on async operation. %@. %@", conditionString, description];
-    NSString *outputString = AGWW_AUTORELEASE([[NSString alloc] initWithFormat:outputFormat arguments:args]);
-    va_end(args);
-
-    return outputString;
-}
-
-static NSString * AGWW_CREATE_FAIL_STRING_2(NSString *conditionString, NSTimeInterval seconds, NSString *description, ...) {
+static NSString * AGWW_CREATE_FAIL_STRING(NSString *conditionString, NSTimeInterval seconds, NSString *description, ...) {
     va_list args;
     va_start(args, description);
     

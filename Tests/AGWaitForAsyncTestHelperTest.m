@@ -72,7 +72,7 @@
     XCTAssertTrue(value);
 }
 
-- (void)testAGWW_CREATE_FAIL_STRING_1
+- (void)testAGWW_CREATE_FAIL_STRING
 {
     float value = 2.0f;
     float equalTo = 3.0f;
@@ -80,31 +80,11 @@
     NSString *conditionString = [NSString stringWithFormat:conditionFormat, value, equalTo];
     
     {
-        NSString *string = AGWW_CREATE_FAIL_STRING_1(conditionString, @"Testdescription with param %f and another %i", 99.0f, 1000);
-        XCTAssertEqualObjects(string,
-                             @"Was already right before 'wait' on async operation. 2.00 should NOT be equal to 3.0. Testdescription with param 99.000000 and another 1000");
-        
-
-    }
-    {
-        NSString *string = AGWW_CREATE_FAIL_STRING_1(conditionString, @"Testdescription without params");
-        XCTAssertEqualObjects(string, @"Was already right before 'wait' on async operation. 2.00 should NOT be equal to 3.0. Testdescription without params");
-    }
-}
-
-- (void)testAGWW_CREATE_FAIL_STRING_2
-{
-    float value = 2.0f;
-    float equalTo = 3.0f;
-    NSString *conditionFormat = [NSString stringWithFormat:@"%s should NOT be equal to %s", "%.2f", "%.1f"];
-    NSString *conditionString = [NSString stringWithFormat:conditionFormat, value, equalTo];
-    
-    {
-        NSString *string = AGWW_CREATE_FAIL_STRING_2(conditionString, 5.0, @"Testdescription with param %f and another %i", 99.0f, 1000);
+        NSString *string = AGWW_CREATE_FAIL_STRING(conditionString, 5.0, @"Testdescription with param %f and another %i", 99.0f, 1000);
         XCTAssertEqualObjects(string, @"Spent too much time (5.00 seconds). 2.00 should NOT be equal to 3.0. Testdescription with param 99.000000 and another 1000");
     }
     {
-        NSString *string = AGWW_CREATE_FAIL_STRING_2(conditionString, 5.0, @"Testdescription without params");
+        NSString *string = AGWW_CREATE_FAIL_STRING(conditionString, 5.0, @"Testdescription without params");
         XCTAssertEqualObjects(string, @"Spent too much time (5.00 seconds). 2.00 should NOT be equal to 3.0. Testdescription without params");
     }
 }
