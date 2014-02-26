@@ -1,6 +1,14 @@
 # AGAsyncTestHelper
 
-C Macro for writing unit tests with asynchronous operations. Works perfectly with the new XCTest framework! If you want to use SenTestingKit be sure to use tag `0.2.1`.
+C Macro for writing unit tests with asynchronous operations.
+
+### XCTest
+
+Use the latest version.
+
+### SenTestingKit
+
+Use tag/version `0.2.1`
 
 ### Example blocks
 
@@ -15,7 +23,7 @@ C Macro for writing unit tests with asynchronous operations. Works perfectly wit
         WAIT_WHILE(!jobDone, 2.0);
     }
 
-`WAIT_WHILE()` will stall current runloop while `!jobDone` is `TRUE` and throw an `STFail` if exceeding time limit (2.0 seconds)
+`WAIT_WHILE()` will stall current runloop while `!jobDone` is `TRUE` and throw an `XCTFail()` if exceeding time limit (2.0 seconds)
 
 
 ### Example plain callback / delegate
@@ -32,7 +40,7 @@ C Macro for writing unit tests with asynchronous operations. Works perfectly wit
         self.jobDone = YES;
     }
 
-`WAIT_WHILE()` will stall current runloop while `!self.jobDone` is `TRUE` and throw an `STFail` if exceeding time limit (2.0 seconds)
+`WAIT_WHILE()` will stall current runloop while `!self.jobDone` is `TRUE` and throw an `XCTFail()` if exceeding time limit (2.0 seconds)
 
 ### Advantages
 
@@ -46,7 +54,7 @@ C Macro for writing unit tests with asynchronous operations. Works perfectly wit
 
 The macro will evaluate the expression while the expression is true **or** the time limit is reached.
 
-These macros will generate STFail() if time limit is reached.
+These macros will generate `XCTFail()` if time limit is reached.
      
     WAIT_WHILE(expressionIsTrue, limitInSeconds)
     WAIT_WHILE_WITH_DESC(expressionIsTrue, seconds, description, ...)
