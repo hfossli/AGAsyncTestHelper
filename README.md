@@ -6,9 +6,9 @@ C Macro for writing unit tests with asynchronous operations on iOS. Supports bot
    
 Install either `AGAsyncTestHelper` or `AGAsyncTestHelper/Shorthand` with cocoapods. 
 
-### Example blocks
+### Example: Wait for block callback
 
-    - (void)testDoSomeOperation
+    - (void)testAsyncBlockCallback
     {
         __block BOOL jobDone = NO;
     
@@ -22,21 +22,61 @@ Install either `AGAsyncTestHelper` or `AGAsyncTestHelper/Shorthand` with cocoapo
 `WAIT_WHILE()` will stall current runloop while `!jobDone` is `TRUE` and throw an `XCTFail()` if exceeding time limit (2.0 seconds)
 
 
-### Example plain callback / delegate
+### Example: Wait for delegate callback
 
-    - (void)testDoSomeOperation
+```
+- (void)testAsyncDelegateCallback
+{
+    Manager *manager = [Manager new];
+    manager.delegate = self;
+    [manager doSomeOperation];
+
+    WAIT_WHILE(!self.jobDone, 2.0);
+}
+
+- (void)someOperationIsDoneInManager:(Manager *)manager
+{
+    self.jobDone = YES;
+}
+```
+
+### Example: Wait for @selector callback
+
+    - (void)testAsyncSelectorCallback
     {
-        [Manager doSomeOperationOnDoneTellTarget:self selector:@selector(someOperationDone)];
+        [Manager doSomeOperationOnDoneTellTarget:self selector:@selector(someOperationIsDone)];
     
         WAIT_WHILE(!self.jobDone, 2.0);
     }
     
-    - (void)someOperationDone
+    - (void)someOperationIsDone
     {
         self.jobDone = YES;
     }
 
 `WAIT_WHILE()` will stall current runloop while `!self.jobDone` is `TRUE` and throw an `XCTFail()` or `STFail()` if exceeding time limit (2.0 seconds)
+
+### Example: Multiple values will eventually be right
+
+```
+- (void)testMultipleWillEventuallyBeRight
+{
+    UIImage *image = ...;
+    [[ImageManager shared] saveImage:image];
+
+    BOOL (^cacheIsPurged) = ^{
+        UIImage *cachedMemoryImage = [[ImageManager shared] imageFromMemoryCacheForKey:@"IMAGE_KEY"];
+        UIImage *cachedDiskImage = [[ImageManager shared] imageFromDiskCacheForKey:@"IMAGE_KEY"];
+        return cachedMemoryImage || cachedDiskImage;
+    };
+
+    [[ImageManager shared] purgeCacheAsync];
+
+    WAIT_WHILE(!cacheIsPurged(), 5.0, @"Failed to clean up image cache!");
+}
+```
+`WAIT_WHILE()` will stall current runloop while `!cacheIsPurged()` is `TRUE` and throw an `XCTFail()` or `STFail()` if exceeding time limit (5.0 seconds)
+
 
 ### Overview
 
