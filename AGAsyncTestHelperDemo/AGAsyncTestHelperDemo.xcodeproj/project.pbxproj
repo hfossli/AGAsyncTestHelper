@@ -55,7 +55,7 @@
 		A3FE7D7418C4B3A800E080D2 /* AGAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AGAppDelegate.h; sourceTree = "<group>"; };
 		A3FE7D7518C4B3A800E080D2 /* AGAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AGAppDelegate.m; sourceTree = "<group>"; };
 		A3FE7D7718C4B3A800E080D2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		A3FE7D7D18C4B3A800E080D2 /* AGAsyncTestHelperDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = AGAsyncTestHelperDemoTests.xctest; path = AGAsyncTestHelperXCTestTarget.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A3FE7D7D18C4B3A800E080D2 /* AGAsyncTestHelperXCTestTarget.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AGAsyncTestHelperXCTestTarget.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3FE7D7E18C4B3A800E080D2 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		A3FE7D8618C4B3A800E080D2 /* AGAsyncTestHelperDemoTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AGAsyncTestHelperDemoTests-Info.plist"; sourceTree = "<group>"; };
 		A3FE7D8818C4B3A800E080D2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -120,7 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				A3FE7D6218C4B3A800E080D2 /* AGAsyncTestHelperDemo.app */,
-				A3FE7D7D18C4B3A800E080D2 /* AGAsyncTestHelperDemoTests.xctest */,
+				A3FE7D7D18C4B3A800E080D2 /* AGAsyncTestHelperXCTestTarget.xctest */,
 				A3FE7D9818C4B3DF00E080D2 /* AGAsyncTestHelperSenTestTarget.octest */,
 			);
 			name = Products;
@@ -249,7 +249,7 @@
 			);
 			name = AGAsyncTestHelperXCTestTarget;
 			productName = AGAsyncTestHelperDemoTests;
-			productReference = A3FE7D7D18C4B3A800E080D2 /* AGAsyncTestHelperDemoTests.xctest */;
+			productReference = A3FE7D7D18C4B3A800E080D2 /* AGAsyncTestHelperXCTestTarget.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		A3FE7D9718C4B3DF00E080D2 /* AGAsyncTestHelperSenTestTarget */ = {
