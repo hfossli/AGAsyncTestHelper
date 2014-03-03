@@ -7,8 +7,8 @@ Pod::Spec.new do |s|
   s.author = { "Håvard Fossli" => "hfossli@gmail.com" }
   s.source = {
     :git => "https://github.com/hfossli/AGAsyncTestHelper.git",
-    :branch => "develop"
-    }
+    :tag => s.version.to_s
+  }
   s.default_subspec = 'Core'  
 
   s.subspec 'Core' do |ss|
