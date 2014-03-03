@@ -22,7 +22,10 @@
 // THE SOFTWARE.
 
 #import <XCTest/XCTest.h>
-#import "AGWaitForAsyncTestHelper.h"
+
+#define AGWW_SHORTHAND
+
+#import "AGAsyncTestHelper.h"
 
 @interface AGTestCaseDefinesTest : XCTestCase {
 @private
@@ -49,15 +52,15 @@
 #pragma mark - Tests
 
 
-- (void)testAGWWAssertSameType
+- (void)testAGWW_ASSERT_SAME_TYPE
 {
-    XCTAssertTrue(AGWWISDifferentType(2, 2.0f));
-    XCTAssertTrue(AGWWISDifferentType(2.0, 2.0f));
-    XCTAssertFalse(AGWWISDifferentType(2.0f, 2.0f));
-    XCTAssertFalse(AGWWISDifferentType((int)2.0f, (int)2.0f));
+    XCTAssertTrue(AGWW_IS_DIFFERENT_TYPE(2, 2.0f));
+    XCTAssertTrue(AGWW_IS_DIFFERENT_TYPE(2.0, 2.0f));
+    XCTAssertFalse(AGWW_IS_DIFFERENT_TYPE(2.0f, 2.0f));
+    XCTAssertFalse(AGWW_IS_DIFFERENT_TYPE((int)2.0f, (int)2.0f));
 }
 
-- (void)testAG_STALL_RUNLOPP_WHILE
+- (void)testAGWW_STALL_RUNLOOP_WHILE
 {
     __block BOOL value = NO;
     
@@ -67,7 +70,7 @@
         value = TRUE;
     });
     
-    AG_STALL_RUNLOPP_WHILE(!value, (NSTimeInterval)1.0);
+    AGWW_STALL_RUNLOOP_WHILE(!value, (NSTimeInterval)1.0);
     
     XCTAssertTrue(value);
 }
@@ -80,11 +83,11 @@
     NSString *conditionString = [NSString stringWithFormat:conditionFormat, value, equalTo];
     
     {
-        NSString *string = AGWW_CREATE_FAIL_STRING(conditionString, 5.0, @"Testdescription with param %f and another %i", 99.0f, 1000);
+        NSString *string = agww_makeFailString(conditionString, 5.0, @"Testdescription with param %f and another %i", 99.0f, 1000);
         XCTAssertEqualObjects(string, @"Spent too much time (5.00 seconds). 2.00 should NOT be equal to 3.0. Testdescription with param 99.000000 and another 1000");
     }
     {
-        NSString *string = AGWW_CREATE_FAIL_STRING(conditionString, 5.0, @"Testdescription without params");
+        NSString *string = agww_makeFailString(conditionString, 5.0, @"Testdescription without params");
         XCTAssertEqualObjects(string, @"Spent too much time (5.00 seconds). 2.00 should NOT be equal to 3.0. Testdescription without params");
     }
 }
@@ -101,7 +104,7 @@
         didWait = TRUE;
     });
     
-    WAIT_WHILE(shouldWait, (NSTimeInterval)1.0);
+    AGWW_WAIT_WHILE(shouldWait, (NSTimeInterval)1.0);
     XCTAssertTrue(didWait);
 }
 
@@ -116,7 +119,7 @@
         didWait = TRUE;
     });
 
-    WAIT_WHILE(shouldWait, (NSTimeInterval)1.0);
+    AGWW_WAIT_WHILE(shouldWait, (NSTimeInterval)1.0);
     XCTAssertFalse(didWait);
 }
 
@@ -132,7 +135,7 @@
         didWait = TRUE;
     });
     
-    WAIT_WHILE_WITH_DESC(shouldWaitFurther, (NSTimeInterval)1.0, @"Test description %i", 12345);
+    AGWW_WAIT_WHILE_WITH_DESC(shouldWaitFurther, (NSTimeInterval)1.0, @"Test description %i", 12345);
     XCTAssertTrue(didWait);
 }
 
@@ -148,7 +151,7 @@
         didWait = TRUE;
     });
     
-    WAIT_WHILE_EQUALS(value, 2.0f, (NSTimeInterval)1.0);
+    AGWW_WAIT_WHILE_EQUALS(value, 2.0f, (NSTimeInterval)1.0);
     XCTAssertTrue(didWait);
 }
 
@@ -164,7 +167,7 @@
         didWait = TRUE;
     });
     
-    WAIT_WHILE_EQUALS_WITH_DESC(value, 2.0f, (NSTimeInterval)1.0, @"Test description %i", 12345);
+    AGWW_WAIT_WHILE_EQUALS_WITH_DESC(value, 2.0f, (NSTimeInterval)1.0, @"Test description %i", 12345);
     XCTAssertTrue(didWait);
 }
 
@@ -185,7 +188,7 @@
         didWait = TRUE;
     });
     
-    WAIT_WHILE_EQUALS_WITH_ACCURACY(value1, [self testValue], 0.001f, (NSTimeInterval)1.0);
+    AGWW_WAIT_WHILE_EQUALS_WITH_ACCURACY(value1, [self testValue], 0.001f, (NSTimeInterval)1.0);
     XCTAssertTrue(didWait);
 }
 
@@ -201,7 +204,7 @@
         didWait = TRUE;
     });
     
-    WAIT_WHILE_EQUALS_WITH_ACCURACY_WITH_DESC(value1, 2.0f, 0.001f, (NSTimeInterval)1.0, @"Test description %i", 12345);
+    AGWW_WAIT_WHILE_EQUALS_WITH_ACCURACY_WITH_DESC(value1, 2.0f, 0.001f, (NSTimeInterval)1.0, @"Test description %i", 12345);
     XCTAssertTrue(didWait);
 }
 
@@ -217,7 +220,7 @@
         didWait = TRUE;
     });
     
-    WAIT_WHILE_NOT_EQUALS(value1, 2.0f, (NSTimeInterval)1.0);
+    AGWW_WAIT_WHILE_NOT_EQUALS(value1, 2.0f, (NSTimeInterval)1.0);
     XCTAssertTrue(didWait);
 }
 
@@ -233,8 +236,18 @@
         didWait = TRUE;
     });
     
-    WAIT_WHILE_NOT_EQUALS_WITH_DESC(value1, 2.0f, (NSTimeInterval)1.0, @"Test description %i", 12345);
+    AGWW_WAIT_WHILE_NOT_EQUALS_WITH_DESC(value1, 2.0f, (NSTimeInterval)1.0, @"Test description %i", 12345);
     XCTAssertTrue(didWait);
+}
+
+- (void)testShortNames
+{
+    BOOL wait = NO;
+    NSTimeInterval maxWaitDuration = 0.2;
+    WAIT_WHILE(wait, maxWaitDuration);
+    WAIT_WHILE_EQUALS(1, 3, maxWaitDuration);
+    WAIT_WHILE_EQUALS_WITH_ACCURACY(0.2, 0.3, 0.01, maxWaitDuration);
+    WAIT_WHILE_NOT_EQUALS(1, 1, maxWaitDuration);
 }
 
 @end
