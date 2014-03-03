@@ -2,24 +2,50 @@
 
 C Macro for writing unit tests with asynchronous operations on iOS. Supports both SenTestingKit and XCTest.
 
+
+
+
 ### Installation
    
 Install either `AGAsyncTestHelper` or `AGAsyncTestHelper/Shorthand` with cocoapods. 
 
+
+
+### Overview
+
+The macro will evaluate the expression (the first parameter) until expression is not longer true **or** the time limit is reached.
+
+These macros will generate `XCTFail()` or `STFail()` if time limit is reached.
+     
+    WAIT_WHILE(<expression_to_evaluate>, limit_in_seconds, ...)
+    WAIT_WHILE_EQUALS(<value1>, <value2>, limit_in_seconds, ...)
+    WAIT_WHILE_EQUALS_WITH_ACCURACY(<value1>, <value2>, accuracy, limit_in_seconds, ...)
+    WAIT_WHILE_NOT_EQUALS(<value1>, <value2>, limit_in_seconds, ...)
+    AG_STALL_RUNLOPP_WHILE(<expression_to_evaluate>, limit_in_seconds)
+
+
+
+
+
 ### Example: Wait for block callback
 
-    - (void)testAsyncBlockCallback
-    {
-        __block BOOL jobDone = NO;
-    
-        [Manager doSomeOperationOnDone:^(id data) {
-            jobDone = YES; 
-        }];
-    
-        WAIT_WHILE(!jobDone, 2.0);
-    }
+```
+- (void)testAsyncBlockCallback
+{
+    __block BOOL jobDone = NO;
+
+    [Manager doSomeOperationOnDone:^(id data) {
+        jobDone = YES; 
+    }];
+
+    WAIT_WHILE(!jobDone, 2.0);
+}
+```
 
 `WAIT_WHILE()` will stall current runloop while `!jobDone` is `TRUE` and throw an `XCTFail()` if exceeding time limit (2.0 seconds)
+
+
+
 
 
 ### Example: Wait for delegate callback
@@ -41,21 +67,33 @@ Install either `AGAsyncTestHelper` or `AGAsyncTestHelper/Shorthand` with cocoapo
 ```
 `WAIT_WHILE()` will stall current runloop while `!self.jobDone` is `TRUE` and throw an `XCTFail()` or `STFail()` if exceeding time limit (2.0 seconds)
 
+
+
+
+
+
 ### Example: Wait for @selector callback
 
-    - (void)testAsyncSelectorCallback
-    {
-        [Manager doSomeOperationOnDoneTellTarget:self selector:@selector(someOperationIsDone)];
-    
-        WAIT_WHILE(!self.jobDone, 2.0);
-    }
-    
-    - (void)someOperationIsDone
-    {
-        self.jobDone = YES;
-    }
+```
+- (void)testAsyncSelectorCallback
+{
+    [Manager doSomeOperationOnDoneTellTarget:self selector:@selector(someOperationIsDone)];
+
+    WAIT_WHILE(!self.jobDone, 2.0);
+}
+
+- (void)someOperationIsDone
+{
+    self.jobDone = YES;
+}
+```
 
 `WAIT_WHILE()` will stall current runloop while `!self.jobDone` is `TRUE` and throw an `XCTFail()` or `STFail()` if exceeding time limit (2.0 seconds)
+
+
+
+
+
 
 ### Example: Multiple values will eventually be right
 
@@ -79,17 +117,28 @@ Install either `AGAsyncTestHelper` or `AGAsyncTestHelper/Shorthand` with cocoapo
 `WAIT_WHILE()` will stall current runloop while `!cacheIsPurged()` is `TRUE` and throw an `XCTFail()` or `STFail()` if exceeding time limit (5.0 seconds)
 
 
-### Overview
 
-The macro will evaluate the expression while the expression is true **or** the time limit is reached.
 
-These macros will generate `XCTFail()` or `STFail()` if time limit is reached.
-     
-    WAIT_WHILE(expressionIsTrue, seconds, ...)
-    WAIT_WHILE_EQUALS(value1, value2, limitInSeconds, ...)
-    WAIT_WHILE_EQUALS_WITH_ACCURACY(value1, value2, accuracy, limitInSeconds, ...)
-    WAIT_WHILE_NOT_EQUALS(value1, value2, limitInSeconds, ...)
-    AG_STALL_RUNLOPP_WHILE(expressionIsTrue, limitInSeconds)
+### Under the hood
+
+A simplified version of how the macro works could look like this
+
+```
+__block BOOL done = NO;
+doSomethingAsynchronouslyWithBlock(^{
+    done = YES;
+});
+
+while(!done) {
+   [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+}
+```
+
+Effectively stalling the runloop until `done` is true. This does not block the main thread so you are still able to have callbacks on the main thread. 
+
+
+
+
 
 ### Advantages
 
@@ -98,6 +147,9 @@ These macros will generate `XCTFail()` or `STFail()` if time limit is reached.
 - Small library
 - Works perfectly with SenTestingKit and XCTest (could easily support more)
 - No known bugs or issues
+
+
+
 
 ### Alternatives
 
@@ -112,6 +164,10 @@ You've got several alternatives like
 If you've got other alternatives which should be listed here please let me know.
 
 There is also a great thread on stack overflow http://stackoverflow.com/questions/4114083/ios-tests-specs-tdd-bdd-and-integration-acceptance-testing
+
+
+
+
 
 ### Extensive description
 
