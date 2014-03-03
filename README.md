@@ -8,7 +8,7 @@ Use the latest version.
 
 ### SenTestingKit
 
-Use tag/version `0.2.1`
+Use tag/version [0.2.1](https://github.com/hfossli/AGAsyncTestHelper/tree/0.2.1)
 
 ### Example blocks
 
