@@ -9,11 +9,16 @@ Pod::Spec.new do |s|
     :git => "https://github.com/hfossli/AGAsyncTestHelper.git",
     :branch => "develop"
     }
-  s.source_files = 'Source/*.{h,m}'
-  s.requires_arc = false
+  s.default_subspec = 'Core'  
+
+  s.subspec 'Core' do |ss|
+    ss.source_files = 'Source/*.{h,m}'
+    ss.requires_arc = false
+  end  
 
   s.subspec 'Shorthand' do |ss|
-    ss.prefix_header_contents = '#define AGWW_SHORTHAND'
+    ss.dependency 'AGAsyncTestHelper/Core'
+    ss.xcconfig = { "GCC_PREPROCESSOR_DEFINITIONS" => '$(inherited) AGWW_SHORTHAND' }
   end
 
 end
