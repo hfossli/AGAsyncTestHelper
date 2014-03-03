@@ -1,14 +1,6 @@
 # AGAsyncTestHelper
 
-C Macro for writing unit tests with asynchronous operations.
-
-### XCTest
-
-Use the latest version.
-
-### SenTestingKit
-
-Use tag/version `0.2.1`
+C Macro for writing unit tests with asynchronous operations on iOS. Supports both SenTestingKit and XCTest.
 
 ### Example blocks
 
