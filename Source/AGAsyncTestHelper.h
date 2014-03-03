@@ -27,7 +27,8 @@
  * @param whileTrue Can be anything
  * @param seconds NSTimeInterval
  */
-#define AGWW_STALL_RUNLOOP_WHILE(whileTrue, limitInSeconds) ({\
+#define AGWW_STALL_RUNLOOP_WHILE(whileTrue, limitInSeconds)\
+({\
     NSDate *giveUpDate = [NSDate dateWithTimeIntervalSinceNow:limitInSeconds];\
     while ((whileTrue) && [giveUpDate timeIntervalSinceNow] > 0)\
     {\
@@ -53,7 +54,7 @@
     {\
         NSString *description = [NSString stringWithFormat:@"" __VA_ARGS__]; \
         NSString *failString = _agww_makeFailString(conditionString, castedLimit, description, ##__VA_ARGS__);\
-        XCTFail(@"%@", failString);\
+        _AGWW_FAIL(@"%@", failString);\
     }\
 })
 #ifdef AGWW_SHORTHAND
@@ -77,7 +78,7 @@
         NSString *description = [NSString stringWithFormat:@"" __VA_ARGS__]; \
         NSString *conditionString = _AGWW_VALUE_EQUALITY_FAIL_STRING(value1, @"should not be equal to", value2, 0);\
         NSString *failString = _agww_makeFailString(conditionString, castedLimit, description, ##__VA_ARGS__);\
-        XCTFail(@"%@", failString);\
+        _AGWW_FAIL(@"%@", failString);\
     }\
 })
 #ifdef AGWW_SHORTHAND
@@ -103,7 +104,7 @@
         NSString *description = [NSString stringWithFormat:@"" __VA_ARGS__]; \
         NSString *conditionString = _AGWW_VALUE_EQUALITY_FAIL_STRING(value1, @"should be equal to", value2, accuracy);\
         NSString *failString = _agww_makeFailString(conditionString, castedLimit, description, ##__VA_ARGS__);\
-        XCTFail(@"%@", failString);\
+        _AGWW_FAIL(@"%@", failString);\
     }\
 })
 #ifdef AGWW_SHORTHAND
@@ -127,7 +128,7 @@
         NSString *description = [NSString stringWithFormat:@"" __VA_ARGS__]; \
         NSString *conditionString = _AGWW_VALUE_EQUALITY_FAIL_STRING(value1, @"should not be equal to", value2, 0);\
         NSString *failString = _agww_makeFailString(conditionString, castedLimit, description, ##__VA_ARGS__);\
-        XCTFail(@"%@", failString);\
+        _AGWW_FAIL(@"%@", failString);\
     }\
 })
 #ifdef AGWW_SHORTHAND
@@ -155,18 +156,26 @@
         NSString *description = [NSString stringWithFormat:@"" __VA_ARGS__]; \
         NSString *conditionString = _AGWW_VALUE_EQUALITY_FAIL_STRING(value1, @"should be equal to", value2, accuracy);\
         NSString *failString = _agww_makeFailString(conditionString, castedLimit, description, ##__VA_ARGS__);\
-        XCTFail(@"%@", failString);\
+        _AGWW_FAIL(@"%@", failString);\
     }\
 })
 #ifdef AGWW_SHORTHAND
 # define WAIT_WHILE_EQUALS_WITH_ACCURACY(value1, value2, accuracy, limitInSeconds, ...) AGWW_WAIT_WHILE_EQUALS_WITH_ACCURACY(value1, value2, accuracy, limitInSeconds, ##__VA_ARGS__)
 #endif
 
+#if defined( XCTFail )
+# define _AGWW_FAIL(...) XCTFail(__VA_ARGS__);
+#elif defined( STFail )
+# define _AGWW_FAIL(...) STFail(__VA_ARGS__);
+#else
+# error "Missing import of either SenTestingKit or XCTest. Please check that your testclass which is importing AGAsyncTestHelper.h is actually importing the desired test framework."
+#endif
+
 #define _AGWW_IS_DIFFERENT_TYPE(a1, a2) strcmp(@encode(__typeof__(a1)), @encode(__typeof__(a2))) != 0
 
 #define _AGWW_ASSERT_SAME_TYPE(a1, a2) {\
     if(_AGWW_IS_DIFFERENT_TYPE(a1, a2)) {\
-        XCTFail(@"Type mismatch: %s is not same type as %s", #a1, #a2);\
+        _AGWW_FAIL(@"Type mismatch: %s is not same type as %s", #a1, #a2);\
     }\
 }
 
