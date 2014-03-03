@@ -39,6 +39,7 @@ Install either `AGAsyncTestHelper` or `AGAsyncTestHelper/Shorthand` with cocoapo
     self.jobDone = YES;
 }
 ```
+`WAIT_WHILE()` will stall current runloop while `!self.jobDone` is `TRUE` and throw an `XCTFail()` or `STFail()` if exceeding time limit (2.0 seconds)
 
 ### Example: Wait for @selector callback
 
