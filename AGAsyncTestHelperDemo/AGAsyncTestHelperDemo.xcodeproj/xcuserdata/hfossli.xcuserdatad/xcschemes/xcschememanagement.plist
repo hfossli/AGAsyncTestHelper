@@ -4,7 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>AsyncTestWait.xcscheme</key>
+		<key>AGAsyncTestHelperDemo.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -12,12 +12,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>A3EE52D516F87344007706C6</key>
+		<key>A3FE7D6118C4B3A800E080D2</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A3EE52F516F87345007706C6</key>
+		<key>A3FE7D7C18C4B3A800E080D2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A3FE7D9718C4B3DF00E080D2</key>
 		<dict>
 			<key>primary</key>
 			<true/>

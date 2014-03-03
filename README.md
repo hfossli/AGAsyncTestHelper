@@ -1,14 +1,10 @@
 # AGAsyncTestHelper
 
-C Macro for writing unit tests with asynchronous operations.
+C Macro for writing unit tests with asynchronous operations on iOS. Supports both SenTestingKit and XCTest.
 
-### XCTest
-
-Use the latest version.
-
-### SenTestingKit
-
-Use tag/version [0.2.1](https://github.com/hfossli/AGAsyncTestHelper/tree/0.2.1)
+### Installation
+   
+Install either `AGAsyncTestHelper` or `AGAsyncTestHelper/Shorthand` with cocoapods. 
 
 ### Example blocks
 
@@ -40,7 +36,19 @@ Use tag/version [0.2.1](https://github.com/hfossli/AGAsyncTestHelper/tree/0.2.1)
         self.jobDone = YES;
     }
 
-`WAIT_WHILE()` will stall current runloop while `!self.jobDone` is `TRUE` and throw an `XCTFail()` if exceeding time limit (2.0 seconds)
+`WAIT_WHILE()` will stall current runloop while `!self.jobDone` is `TRUE` and throw an `XCTFail()` or `STFail()` if exceeding time limit (2.0 seconds)
+
+### Overview
+
+The macro will evaluate the expression while the expression is true **or** the time limit is reached.
+
+These macros will generate `XCTFail()` or `STFail()` if time limit is reached.
+     
+    WAIT_WHILE(expressionIsTrue, seconds, ...)
+    WAIT_WHILE_EQUALS(value1, value2, limitInSeconds, ...)
+    WAIT_WHILE_EQUALS_WITH_ACCURACY(value1, value2, accuracy, limitInSeconds, ...)
+    WAIT_WHILE_NOT_EQUALS(value1, value2, limitInSeconds, ...)
+    AG_STALL_RUNLOPP_WHILE(expressionIsTrue, limitInSeconds)
 
 ### Advantages
 
@@ -49,22 +57,6 @@ Use tag/version [0.2.1](https://github.com/hfossli/AGAsyncTestHelper/tree/0.2.1)
 - Small library
 - Works perfectly with SenTestingKit
 - No known bugs or issues
-
-### Overview
-
-The macro will evaluate the expression while the expression is true **or** the time limit is reached.
-
-These macros will generate `XCTFail()` if time limit is reached.
-     
-    WAIT_WHILE(expressionIsTrue, limitInSeconds)
-    WAIT_WHILE_WITH_DESC(expressionIsTrue, seconds, description, ...)
-    WAIT_WHILE_EQUALS(value1, value2, limitInSeconds)
-    WAIT_WHILE_EQUALS_WITH_DESC(value1, value2, limitInSeconds, description, ...)
-    WAIT_WHILE_EQUALS_WITH_ACCURACY(value1, value2, accuracy, limitInSeconds)
-    WAIT_WHILE_EQUALS_WITH_ACCURACY_WITH_DESC(value1, value2, accuracy, limitInSeconds, description, ...)
-    WAIT_WHILE_NOT_EQUALS(value, value2, limitInSeconds)
-    WAIT_WHILE_NOT_EQUALS_WITH_DESC(value1, value2, limitInSeconds, description, ...)
-    AG_STALL_RUNLOPP_WHILE(expressionIsTrue, limitInSeconds)
 
 ### Alternatives
 
@@ -83,9 +75,5 @@ There is also a great thread on stack overflow http://stackoverflow.com/question
 ### Extensive description
 
 This library or bundle enables you to do async test operations with asynchronous callbacks in your SenTestCase. Works with GCD (Grand Central Dispatch) and regular delegate callbacks. 
-
-### Cocoa pods
-    
-It's available as `AGAsyncTestHelper`.
 
 [![Agens | Digital craftsmanship](http://static.agens.no/images/agens_logo_w_slogan_avenir_small.png)](http://agens.no/)
