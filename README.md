@@ -96,7 +96,7 @@ These macros will generate `XCTFail()` or `STFail()` if time limit is reached.
 - Minimum code
 - Error thrown *in the test*. Since it is based on macro's the exception will not be thrown in some 3rd party implementation file further down the stack
 - Small library
-- Works perfectly with SenTestingKit
+- Works perfectly with SenTestingKit and XCTest (could easily support more)
 - No known bugs or issues
 
 ### Alternatives
