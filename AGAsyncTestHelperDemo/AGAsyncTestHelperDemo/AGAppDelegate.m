@@ -1,9 +1,9 @@
 //
 //  AGAppDelegate.m
-//  AsyncTestWait
+//  AGAsyncTestHelperDemo
 //
-//  Created by Håvard Fossli on 19.03.13.
-//  Copyright (c) 2013 Håvard Fossli. All rights reserved.
+//  Created by Håvard Fossli on 03.03.14.
+//  Copyright (c) 2014 Agens AS. All rights reserved.
 //
 
 #import "AGAppDelegate.h"

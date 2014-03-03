@@ -21,20 +21,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <XCTest/XCTest.h>
+#import <SenTestingKit/SenTestingKit.h>
 
 #define AGWW_SHORTHAND
 
 #import "AGAsyncTestHelper.h"
 
-@interface AGTestCaseDefinesTest : XCTestCase {
+@interface AGAsyncTestHelperSenTest : SenTestCase {
 @private
     BOOL asyncOperationCompleted;
 }
 
 @end
 
-@implementation AGTestCaseDefinesTest
+@implementation AGAsyncTestHelperSenTest
 
 #pragma mark - Construct and destruct
 
@@ -51,45 +51,18 @@
 
 #pragma mark - Tests
 
-
-- (void)test_AGWW_ASSERT_SAME_TYPE
-{
-    XCTAssertTrue(_AGWW_IS_DIFFERENT_TYPE(2, 2.0f));
-    XCTAssertTrue(_AGWW_IS_DIFFERENT_TYPE(2.0, 2.0f));
-    XCTAssertFalse(_AGWW_IS_DIFFERENT_TYPE(2.0f, 2.0f));
-    XCTAssertFalse(_AGWW_IS_DIFFERENT_TYPE((int)2.0f, (int)2.0f));
-}
-
 - (void)testAGWW_STALL_RUNLOOP_WHILE
 {
     __block BOOL value = NO;
-    
+
     double delayInSeconds = 0.1;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^(void){
         value = TRUE;
     });
-    
-    AGWW_STALL_RUNLOOP_WHILE(!value, (NSTimeInterval)1.0);
-    
-    XCTAssertTrue(value);
-}
 
-- (void)testAGWW_CREATE_FAIL_STRING
-{
-    float value = 2.0f;
-    float equalTo = 3.0f;
-    NSString *conditionFormat = [NSString stringWithFormat:@"%s should NOT be equal to %s", "%.2f", "%.1f"];
-    NSString *conditionString = [NSString stringWithFormat:conditionFormat, value, equalTo];
-    
-    {
-        NSString *string = _agww_makeFailString(conditionString, 10.0, @"Testdescription with param %f and another %i", 99.0f, 1000);
-        XCTAssertEqualObjects(string, @"Async test didn't complete within 10.00 seconds. 2.00 should NOT be equal to 3.0. Testdescription with param 99.000000 and another 1000");
-    }
-    {
-        NSString *string = _agww_makeFailString(conditionString, 7.0, @"Testdescription without params");
-        XCTAssertEqualObjects(string, @"Async test didn't complete within 7.00 seconds. 2.00 should NOT be equal to 3.0. Testdescription without params");
-    }
+    AGWW_STALL_RUNLOOP_WHILE(!value, (NSTimeInterval)1.0);
+    STAssertTrue(value, nil);
 }
 
 - (void)testWAIT_WHILE_withCorrectValueAfterDelay
@@ -105,7 +78,7 @@
     });
     
     AGWW_WAIT_WHILE(shouldWait, (NSTimeInterval)1.0);
-    XCTAssertTrue(didWait);
+    STAssertTrue(didWait, nil);
 }
 
 - (void)testWAIT_WHILE_withCorrectInitialValue
@@ -120,7 +93,7 @@
     });
 
     AGWW_WAIT_WHILE(shouldWait, (NSTimeInterval)1.0);
-    XCTAssertFalse(didWait);
+    STAssertFalse(didWait, nil);
 }
 
 - (void)testWAIT_WHILE_withDescription
@@ -136,12 +109,12 @@
     });
     
     AGWW_WAIT_WHILE(shouldWaitFurther, (NSTimeInterval)1.0, @"Test description %i", 12345);
-    XCTAssertTrue(didWait);
+    STAssertTrue(didWait, nil);
 }
 
 - (void)testWAIT_WHILE_EQUALS
 {
-    __block CGFloat value = 2.0f;
+    __block CGFloat value = 2.0;
     __block BOOL didWait = FALSE;
     
     double delayInSeconds = 0.1;
@@ -151,13 +124,13 @@
         didWait = TRUE;
     });
     
-    AGWW_WAIT_WHILE_EQUALS(value, 2.0f, (NSTimeInterval)1.0);
-    XCTAssertTrue(didWait);
+    AGWW_WAIT_WHILE_EQUALS(value, 2.0, (NSTimeInterval)1.0);
+    STAssertTrue(didWait, nil);
 }
 
 - (void)testWAIT_WHILE_EQUALS_withDescription
 {
-    __block CGFloat value = 2.0f;
+    __block CGFloat value = 2.0;
     __block BOOL didWait = FALSE;
     
     double delayInSeconds = 0.1;
@@ -167,13 +140,13 @@
         didWait = TRUE;
     });
     
-    AGWW_WAIT_WHILE_EQUALS(value, 2.0f, (NSTimeInterval)1.0, @"Test description %i", 12345);
-    XCTAssertTrue(didWait);
+    AGWW_WAIT_WHILE_EQUALS(value, 2.0, (NSTimeInterval)1.0, @"Test description %i", 12345);
+    STAssertTrue(didWait, nil);
 }
 
-- (float)testValue
+- (CGFloat)testValue
 {
-    return 2.0f;
+    return 2.0;
 }
 
 - (void)testWAIT_WHILE_EQUALS_WITH_ACCURACY
@@ -188,13 +161,13 @@
         didWait = TRUE;
     });
     
-    AGWW_WAIT_WHILE_EQUALS_WITH_ACCURACY(value1, [self testValue], 0.001f, (NSTimeInterval)1.0);
-    XCTAssertTrue(didWait);
+    AGWW_WAIT_WHILE_EQUALS_WITH_ACCURACY(value1, [self testValue], (CGFloat)0.001, (NSTimeInterval)1.0);
+    STAssertTrue(didWait, nil);
 }
 
 - (void)testWAIT_WHILE_EQUALS_WITH_ACCURACY_withDescription
 {
-    __block CGFloat value1 = 2.0f;
+    __block CGFloat value1 = 2.0;
     __block BOOL didWait = FALSE;
     
     double delayInSeconds = 0.1;
@@ -204,40 +177,40 @@
         didWait = TRUE;
     });
     
-    AGWW_WAIT_WHILE_EQUALS_WITH_ACCURACY(value1, 2.0f, 0.001f, (NSTimeInterval)1.0, @"Test description %i", 12345);
-    XCTAssertTrue(didWait);
+    AGWW_WAIT_WHILE_EQUALS_WITH_ACCURACY(value1, 2.0, (CGFloat)0.001, (NSTimeInterval)1.0, @"Test description %i", 12345);
+    STAssertTrue(didWait, nil);
 }
 
 - (void)testWAIT_WHILE_NOT_EQUALS
 {
-    __block CGFloat value1 = 1.0f;
+    __block CGFloat value1 = 1.0;
     __block BOOL didWait = FALSE;
     
     double delayInSeconds = 0.1;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^(void){
-        value1 = 2.0f;
+        value1 = 2.0;
         didWait = TRUE;
     });
     
-    AGWW_WAIT_WHILE_NOT_EQUALS(value1, 2.0f, (NSTimeInterval)1.0);
-    XCTAssertTrue(didWait);
+    AGWW_WAIT_WHILE_NOT_EQUALS(value1, 2.0, (NSTimeInterval)1.0);
+    STAssertTrue(didWait, nil);
 }
 
 - (void)testWAIT_WHILE_NOT_EQUALS_withDescription
 {
-    __block CGFloat value1 = 1.0f;
+    __block CGFloat value1 = 1.0;
     __block BOOL didWait = FALSE;
     
     double delayInSeconds = 0.1;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^(void){
-        value1 = 2.0f;
+        value1 = 2.0;
         didWait = TRUE;
     });
     
-    AGWW_WAIT_WHILE_NOT_EQUALS(value1, 2.0f, (NSTimeInterval)1.0, @"Test description %i", 12345);
-    XCTAssertTrue(didWait);
+    AGWW_WAIT_WHILE_NOT_EQUALS(value1, 2.0, (NSTimeInterval)1.0, @"Test description %i", 12345);
+    STAssertTrue(didWait, nil);
 }
 
 - (void)testWAIT_WHILE_NOT_EQUALS_WITH_ACCURACY
@@ -255,7 +228,7 @@
     });
 
     AGWW_WAIT_WHILE_NOT_EQUALS_WITH_ACCURACY(value, targetValue, accuracy, (NSTimeInterval)1.0);
-    XCTAssertTrue(didWait);
+    STAssertTrue(didWait, nil);
 }
 
 - (void)testShortNames

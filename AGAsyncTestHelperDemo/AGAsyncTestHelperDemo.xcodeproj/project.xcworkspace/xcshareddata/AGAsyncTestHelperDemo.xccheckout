@@ -5,20 +5,20 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>4451824E-88DB-4859-95B9-41F85C1E0CB7</string>
+	<string>C5E44A92-C7EF-4610-8CE5-7B54DB47EB5B</string>
 	<key>IDESourceControlProjectName</key>
-	<string>AsyncTestWait</string>
+	<string>AGAsyncTestHelperDemo</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>1D46435B-C797-4239-A800-CD091831D47D</key>
 		<string>ssh://github.com/hfossli/AGSAsyncTestHelper.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Demo/AsyncTestWait.xcodeproj/project.xcworkspace</string>
+	<string>Demo2/AGAsyncTestHelperDemo/AGAsyncTestHelperDemo.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>1D46435B-C797-4239-A800-CD091831D47D</key>
-		<string>../../..</string>
+		<string>../../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>ssh://github.com/hfossli/AGSAsyncTestHelper.git</string>
