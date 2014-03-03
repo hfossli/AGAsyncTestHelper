@@ -52,7 +52,7 @@
     if(whileTrue)\
     {\
         NSString *description = [NSString stringWithFormat:@"" __VA_ARGS__]; \
-        NSString *failString = agww_makeFailString(conditionString, castedLimit, description, ##__VA_ARGS__);\
+        NSString *failString = _agww_makeFailString(conditionString, castedLimit, description, ##__VA_ARGS__);\
         XCTFail(@"%@", failString);\
     }\
 })
@@ -68,15 +68,15 @@
  */
 #define AGWW_WAIT_WHILE_EQUALS(value1, value2, limitInSeconds, ...)\
 ({\
-    AGWW_ASSERT_SAME_TYPE(value1, value2);\
+    _AGWW_ASSERT_SAME_TYPE(value1, value2);\
     NSTimeInterval castedLimit = limitInSeconds;\
     \
     AGWW_STALL_RUNLOOP_WHILE(value1 == value2, castedLimit);\
     if(value1 == value2)\
     {\
         NSString *description = [NSString stringWithFormat:@"" __VA_ARGS__]; \
-        NSString *conditionString = AGWW_VALUE_EQUALITY_FAIL_STRING(value1, @"should not be equal to", value2, 0);\
-        NSString *failString = agww_makeFailString(conditionString, castedLimit, description, ##__VA_ARGS__);\
+        NSString *conditionString = _AGWW_VALUE_EQUALITY_FAIL_STRING(value1, @"should not be equal to", value2, 0);\
+        NSString *failString = _agww_makeFailString(conditionString, castedLimit, description, ##__VA_ARGS__);\
         XCTFail(@"%@", failString);\
     }\
 })
@@ -93,16 +93,16 @@
  */
 #define AGWW_WAIT_WHILE_EQUALS_WITH_ACCURACY(value1, value2, accuracy, limitInSeconds, ...)\
 ({\
-    AGWW_ASSERT_SAME_TYPE(value1, value2);\
-    AGWW_ASSERT_SAME_TYPE(value1, accuracy);\
+    _AGWW_ASSERT_SAME_TYPE(value1, value2);\
+    _AGWW_ASSERT_SAME_TYPE(value1, accuracy);\
     NSTimeInterval castedLimit = limitInSeconds;\
     \
-    AGWW_STALL_RUNLOOP_WHILE(AGWW_ABSOLUTE_DIFFERENCE(value1, value2) < accuracy, castedLimit);\
-    if(AGWW_ABSOLUTE_DIFFERENCE(value1, value2) < accuracy)\
+    AGWW_STALL_RUNLOOP_WHILE(_AGWW_ABSOLUTE_DIFFERENCE(value1, value2) < accuracy, castedLimit);\
+    if(_AGWW_ABSOLUTE_DIFFERENCE(value1, value2) < accuracy)\
     {\
         NSString *description = [NSString stringWithFormat:@"" __VA_ARGS__]; \
-        NSString *conditionString = AGWW_VALUE_EQUALITY_FAIL_STRING(value1, @"should be equal to", value2, accuracy);\
-        NSString *failString = agww_makeFailString(conditionString, castedLimit, description, ##__VA_ARGS__);\
+        NSString *conditionString = _AGWW_VALUE_EQUALITY_FAIL_STRING(value1, @"should be equal to", value2, accuracy);\
+        NSString *failString = _agww_makeFailString(conditionString, castedLimit, description, ##__VA_ARGS__);\
         XCTFail(@"%@", failString);\
     }\
 })
@@ -118,15 +118,15 @@
  */
 #define AGWW_WAIT_WHILE_NOT_EQUALS(value1, value2, limitInSeconds, ...)\
 ({\
-    AGWW_ASSERT_SAME_TYPE(value1, value2);\
+    _AGWW_ASSERT_SAME_TYPE(value1, value2);\
     NSTimeInterval castedLimit = limitInSeconds;\
     \
     AGWW_STALL_RUNLOOP_WHILE(value1 != value2, castedLimit);\
     if(value1 != value2)\
     {\
         NSString *description = [NSString stringWithFormat:@"" __VA_ARGS__]; \
-        NSString *conditionString = AGWW_VALUE_EQUALITY_FAIL_STRING(value1, @"should not be equal to", value2, 0);\
-        NSString *failString = agww_makeFailString(conditionString, castedLimit, description, ##__VA_ARGS__);\
+        NSString *conditionString = _AGWW_VALUE_EQUALITY_FAIL_STRING(value1, @"should not be equal to", value2, 0);\
+        NSString *failString = _agww_makeFailString(conditionString, castedLimit, description, ##__VA_ARGS__);\
         XCTFail(@"%@", failString);\
     }\
 })
@@ -145,16 +145,16 @@
  */
 #define AGWW_WAIT_WHILE_NOT_EQUALS_WITH_ACCURACY(value1, value2, accuracy, limitInSeconds, ...)\
 ({\
-    AGWW_ASSERT_SAME_TYPE(value1, value2);\
-    AGWW_ASSERT_SAME_TYPE(value1, accuracy);\
+    _AGWW_ASSERT_SAME_TYPE(value1, value2);\
+    _AGWW_ASSERT_SAME_TYPE(value1, accuracy);\
     NSTimeInterval castedLimit = limitInSeconds;\
     \
-    AGWW_STALL_RUNLOOP_WHILE(AGWW_ABSOLUTE_DIFFERENCE(value1, value2) > accuracy, castedLimit);\
-    if(AGWW_ABSOLUTE_DIFFERENCE(value1, value2) > accuracy)\
+    AGWW_STALL_RUNLOOP_WHILE(_AGWW_ABSOLUTE_DIFFERENCE(value1, value2) > accuracy, castedLimit);\
+    if(_AGWW_ABSOLUTE_DIFFERENCE(value1, value2) > accuracy)\
     {\
         NSString *description = [NSString stringWithFormat:@"" __VA_ARGS__]; \
-        NSString *conditionString = AGWW_VALUE_EQUALITY_FAIL_STRING(value1, @"should be equal to", value2, accuracy);\
-        NSString *failString = agww_makeFailString(conditionString, castedLimit, description, ##__VA_ARGS__);\
+        NSString *conditionString = _AGWW_VALUE_EQUALITY_FAIL_STRING(value1, @"should be equal to", value2, accuracy);\
+        NSString *failString = _agww_makeFailString(conditionString, castedLimit, description, ##__VA_ARGS__);\
         XCTFail(@"%@", failString);\
     }\
 })
@@ -162,64 +162,64 @@
 # define WAIT_WHILE_EQUALS_WITH_ACCURACY(value1, value2, accuracy, limitInSeconds, ...) AGWW_WAIT_WHILE_EQUALS_WITH_ACCURACY(value1, value2, accuracy, limitInSeconds, ##__VA_ARGS__)
 #endif
 
-#define AGWW_IS_DIFFERENT_TYPE(a1, a2) strcmp(@encode(__typeof__(a1)), @encode(__typeof__(a2))) != 0
+#define _AGWW_IS_DIFFERENT_TYPE(a1, a2) strcmp(@encode(__typeof__(a1)), @encode(__typeof__(a2))) != 0
 
-#define AGWW_ASSERT_SAME_TYPE(a1, a2) {\
-    if(AGWW_IS_DIFFERENT_TYPE(a1, a2)) {\
+#define _AGWW_ASSERT_SAME_TYPE(a1, a2) {\
+    if(_AGWW_IS_DIFFERENT_TYPE(a1, a2)) {\
         XCTFail(@"Type mismatch: %s is not same type as %s", #a1, #a2);\
     }\
 }
 
 #if __has_feature(objc_arc)
-# define AGWW_RETAIN(xx)            xx
-# define AGWW_RELEASE(xx)           xx
-# define AGWW_AUTORELEASE(xx)       xx
+# define _AGWW_RETAIN(xx)            xx
+# define _AGWW_RELEASE(xx)           xx
+# define _AGWW_AUTORELEASE(xx)       xx
 #else
-# define AGWW_RETAIN(xx)            [xx retain]
-# define AGWW_RELEASE(xx)           [xx release]
-# define AGWW_AUTORELEASE(xx)       [xx autorelease]
+# define _AGWW_RETAIN(xx)            [xx retain]
+# define _AGWW_RELEASE(xx)           [xx release]
+# define _AGWW_AUTORELEASE(xx)       [xx autorelease]
 #endif
 
 // TODO: should be replaced with
 // https://github.com/JensAyton/JAValueToString
 
-#define AGWW_PRIMITIVE_AS_STRING(value) \
+#define _AGWW_PRIMITIVE_AS_STRING(value) \
 ({\
     const char *valueType = @encode(__typeof__(value));\
-    NSString *format = [NSString stringWithFormat:@"%s", agww_printFormatTypeForObjCType(valueType)];\
+    NSString *format = [NSString stringWithFormat:@"%s", _agww_printFormatTypeForObjCType(valueType)];\
     NSString *valueAsString = [NSString stringWithFormat:format, value];\
     valueAsString;\
 })
 
-#define AGWW_VALUE_EQUALITY_FAIL_STRING(value1, glue, value2, accuracy) \
+#define _AGWW_VALUE_EQUALITY_FAIL_STRING(value1, glue, value2, accuracy) \
 ({\
-    NSString *stringValue1 = AGWW_PRIMITIVE_AS_STRING(value1);\
-    NSString *stringValue2 = AGWW_PRIMITIVE_AS_STRING(value2);\
+    NSString *stringValue1 = _AGWW_PRIMITIVE_AS_STRING(value1);\
+    NSString *stringValue2 = _AGWW_PRIMITIVE_AS_STRING(value2);\
     \
     NSString *reason;\
     if (accuracy) {\
         reason = [NSString stringWithFormat:@"'%s' (%@) %@ '%s' (%@)", #value1, stringValue1, glue, #value2, stringValue2];\
     } else {\
-        NSString *stringAccuracy = AGWW_PRIMITIVE_AS_STRING(accuracy);\
+        NSString *stringAccuracy = _AGWW_PRIMITIVE_AS_STRING(accuracy);\
         reason = [NSString stringWithFormat:@"'%s' (%@) %@ '%s' (%@) +/-'%@'", #value1, stringValue1, glue, #value2, stringValue2, stringAccuracy];\
     }\
     reason;\
 })
 
-#define AGWW_ABSOLUTE_DIFFERENCE(left,right) (MAX(left,right)-MIN(left,right))
+#define _AGWW_ABSOLUTE_DIFFERENCE(left,right) (MAX(left,right)-MIN(left,right))
 
-static NSString * agww_makeFailString(NSString *conditionString, NSTimeInterval seconds, NSString *description, ...) {
+static NSString * _agww_makeFailString(NSString *conditionString, NSTimeInterval seconds, NSString *description, ...) {
     va_list args;
     va_start(args, description);
     
     NSString *outputFormat = [NSString stringWithFormat:@"Async test didn't complete within %.2f seconds. %@. %@", (NSTimeInterval) seconds, conditionString, description];
-    NSString *outputString = AGWW_AUTORELEASE([[NSString alloc] initWithFormat:outputFormat arguments:args]);
+    NSString *outputString = _AGWW_AUTORELEASE([[NSString alloc] initWithFormat:outputFormat arguments:args]);
     va_end(args);
     
     return outputString;
 }
 
-static const char * agww_printFormatTypeForObjCType(const char *type)
+static const char * _agww_printFormatTypeForObjCType(const char *type)
 {
     if(strcmp(type, @encode(BOOL)) == 0)
         return "%i";

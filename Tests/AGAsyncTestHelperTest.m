@@ -52,12 +52,12 @@
 #pragma mark - Tests
 
 
-- (void)testAGWW_ASSERT_SAME_TYPE
+- (void)test_AGWW_ASSERT_SAME_TYPE
 {
-    XCTAssertTrue(AGWW_IS_DIFFERENT_TYPE(2, 2.0f));
-    XCTAssertTrue(AGWW_IS_DIFFERENT_TYPE(2.0, 2.0f));
-    XCTAssertFalse(AGWW_IS_DIFFERENT_TYPE(2.0f, 2.0f));
-    XCTAssertFalse(AGWW_IS_DIFFERENT_TYPE((int)2.0f, (int)2.0f));
+    XCTAssertTrue(_AGWW_IS_DIFFERENT_TYPE(2, 2.0f));
+    XCTAssertTrue(_AGWW_IS_DIFFERENT_TYPE(2.0, 2.0f));
+    XCTAssertFalse(_AGWW_IS_DIFFERENT_TYPE(2.0f, 2.0f));
+    XCTAssertFalse(_AGWW_IS_DIFFERENT_TYPE((int)2.0f, (int)2.0f));
 }
 
 - (void)testAGWW_STALL_RUNLOOP_WHILE
@@ -83,11 +83,11 @@
     NSString *conditionString = [NSString stringWithFormat:conditionFormat, value, equalTo];
     
     {
-        NSString *string = agww_makeFailString(conditionString, 10.0, @"Testdescription with param %f and another %i", 99.0f, 1000);
+        NSString *string = _agww_makeFailString(conditionString, 10.0, @"Testdescription with param %f and another %i", 99.0f, 1000);
         XCTAssertEqualObjects(string, @"Async test didn't complete within 10.00 seconds. 2.00 should NOT be equal to 3.0. Testdescription with param 99.000000 and another 1000");
     }
     {
-        NSString *string = agww_makeFailString(conditionString, 7.0, @"Testdescription without params");
+        NSString *string = _agww_makeFailString(conditionString, 7.0, @"Testdescription without params");
         XCTAssertEqualObjects(string, @"Async test didn't complete within 7.00 seconds. 2.00 should NOT be equal to 3.0. Testdescription without params");
     }
 }
