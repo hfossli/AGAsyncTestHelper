@@ -42,57 +42,31 @@
 /**
  * @param whileTrue Can be anything
  * @param seconds NSTimeInterval
+ * @param ... Description format string (optional)
  */
-#define AGWW_WAIT_WHILE(whileTrue, seconds)\
-({\
-    AGWW_WAIT_WHILE_WITH_DESC(whileTrue, seconds, nil);\
-})
-#ifdef AGWW_SHORTHAND
-# define WAIT_WHILE(whileTrue, seconds) AGWW_WAIT_WHILE(whileTrue, seconds)
-#endif
-
-/**
- * @param whileTrue Can be anything
- * @param seconds NSTimeInterval
- * @param description NSString format
- * @param ... Arguments for description string format
- */
-#define AGWW_WAIT_WHILE_WITH_DESC(whileTrue, seconds, description, ...)\
+#define AGWW_WAIT_WHILE(whileTrue, seconds, ...)\
 ({\
     NSTimeInterval castedLimit = seconds;\
     NSString *conditionString = [NSString stringWithFormat:@"(%s) should NOT be true after async operation completed", #whileTrue];\
     AGWW_STALL_RUNLOOP_WHILE(whileTrue, castedLimit);\
     if(whileTrue)\
     {\
+        NSString *description = [NSString stringWithFormat:@"" __VA_ARGS__]; \
         NSString *failString = agww_makeFailString(conditionString, castedLimit, description, ##__VA_ARGS__);\
         XCTFail(@"%@", failString);\
     }\
 })
 #ifdef AGWW_SHORTHAND
-# define WAIT_WHILE_WITH_DESC(whileTrue, seconds, description, ...) AGWW_WAIT_WHILE_WITH_DESC(whileTrue, seconds, description, ...)
+# define WAIT_WHILE(whileTrue, seconds, ...) AGWW_WAIT_WHILE(whileTrue, seconds, ##__VA_ARGS__)
 #endif
 
 /**
  * @param value1 Primitive value
  * @param value2 Other primitive value (must be same type as 'value1')
  * @param seconds NSTimeInterval
+ * @param ... Description format string (optional)
  */
-#define AGWW_WAIT_WHILE_EQUALS(value1, value2, limitInSeconds)\
-({\
-    AGWW_WAIT_WHILE_EQUALS_WITH_DESC(value1, value2, limitInSeconds, nil);\
-})
-#ifdef AGWW_SHORTHAND
-# define WAIT_WHILE_EQUALS(value1, value2, limitInSeconds) AGWW_WAIT_WHILE_EQUALS(value1, value2, limitInSeconds)
-#endif
-
-/**
- * @param value1 Primitive value
- * @param value2 Other primitive value (must be same type as 'value1')
- * @param seconds NSTimeInterval
- * @param description NSString format
- * @param ... Arguments for description string format
- */
-#define AGWW_WAIT_WHILE_EQUALS_WITH_DESC(value1, value2, limitInSeconds, description, ...)\
+#define AGWW_WAIT_WHILE_EQUALS(value1, value2, limitInSeconds, ...)\
 ({\
     AGWW_ASSERT_SAME_TYPE(value1, value2);\
     NSTimeInterval castedLimit = limitInSeconds;\
@@ -100,28 +74,14 @@
     AGWW_STALL_RUNLOOP_WHILE(value1 == value2, castedLimit);\
     if(value1 == value2)\
     {\
+        NSString *description = [NSString stringWithFormat:@"" __VA_ARGS__]; \
         NSString *conditionString = AGWW_VALUE_EQUALITY_FAIL_STRING(value1, @"should not be equal to", value2, 0);\
         NSString *failString = agww_makeFailString(conditionString, castedLimit, description, ##__VA_ARGS__);\
         XCTFail(@"%@", failString);\
     }\
 })
 #ifdef AGWW_SHORTHAND
-# define WAIT_WHILE_EQUALS_WITH_DESC(value1, value2, limitInSeconds, description, ...) AGWW_WAIT_WHILE_EQUALS_WITH_DESC(value1, value2, limitInSeconds, description, ...)
-#endif
-
-
-/**
- * @param value1 Primitive value
- * @param value2 Other primitive value (must be same type as 'value1')
- * @param accuracy Primitive value
- * @param seconds NSTimeInterval
- */
-#define AGWW_WAIT_WHILE_EQUALS_WITH_ACCURACY(value1, value2, accuracy, limitInSeconds)\
-({\
-    AGWW_WAIT_WHILE_EQUALS_WITH_ACCURACY_WITH_DESC(value1, value2, accuracy, limitInSeconds, nil);\
-})
-#ifdef AGWW_SHORTHAND
-# define WAIT_WHILE_EQUALS_WITH_ACCURACY(value1, value2, accuracy, limitInSeconds) AGWW_WAIT_WHILE_EQUALS_WITH_ACCURACY(value1, value2, accuracy, limitInSeconds)
+# define WAIT_WHILE_EQUALS(value1, value2, limitInSeconds, ...) AGWW_WAIT_WHILE_EQUALS(value1, value2, limitInSeconds, ##__VA_ARGS__)
 #endif
 
 /**
@@ -129,10 +89,9 @@
  * @param value2 Other primitive value (must be same type as 'value1')
  * @param accuracy Primitive value
  * @param seconds NSTimeInterval
- * @param description NSString format
- * @param ... Arguments for description string format
+ * @param ... Description format string (optional)
  */
-#define AGWW_WAIT_WHILE_EQUALS_WITH_ACCURACY_WITH_DESC(value1, value2, accuracy, limitInSeconds, description, ...)\
+#define AGWW_WAIT_WHILE_EQUALS_WITH_ACCURACY(value1, value2, accuracy, limitInSeconds, ...)\
 ({\
     AGWW_ASSERT_SAME_TYPE(value1, value2);\
     AGWW_ASSERT_SAME_TYPE(value1, accuracy);\
@@ -141,36 +100,23 @@
     AGWW_STALL_RUNLOOP_WHILE(AGWW_ABSOLUTE_DIFFERENCE(value1, value2) < accuracy, castedLimit);\
     if(AGWW_ABSOLUTE_DIFFERENCE(value1, value2) < accuracy)\
     {\
+        NSString *description = [NSString stringWithFormat:@"" __VA_ARGS__]; \
         NSString *conditionString = AGWW_VALUE_EQUALITY_FAIL_STRING(value1, @"should be equal to", value2, accuracy);\
         NSString *failString = agww_makeFailString(conditionString, castedLimit, description, ##__VA_ARGS__);\
         XCTFail(@"%@", failString);\
     }\
 })
 #ifdef AGWW_SHORTHAND
-# define WAIT_WHILE_EQUALS_WITH_ACCURACY_WITH_DESC(value1, value2, accuracy, limitInSeconds, description, ...) AGWW_WAIT_WHILE_EQUALS_WITH_ACCURACY_WITH_DESC(value1, value2, accuracy, limitInSeconds, description, ...)
-#endif
-
-/**
- * @param value Primitive value
- * @param equalTo Other primitive value (must be same type as 'value1')
- * @param seconds NSTimeInterval
- */
-#define AGWW_WAIT_WHILE_NOT_EQUALS(value, equalTo, limitInSeconds)\
-({\
-    AGWW_WAIT_WHILE_NOT_EQUALS_WITH_DESC(value, equalTo, limitInSeconds, nil);\
-})
-#ifdef AGWW_SHORTHAND
-# define WAIT_WHILE_NOT_EQUALS(value, equalTo, limitInSeconds) AGWW_WAIT_WHILE_NOT_EQUALS(value, equalTo, limitInSeconds)
+# define WAIT_WHILE_EQUALS_WITH_ACCURACY(value1, value2, accuracy, limitInSeconds, ...) AGWW_WAIT_WHILE_EQUALS_WITH_ACCURACY(value1, value2, accuracy, limitInSeconds, ##__VA_ARGS__)
 #endif
 
 /**
  * @param value1 Primitive value
  * @param value2 Other primitive value (must be same type as 'value1')
  * @param seconds NSTimeInterval
- * @param description NSString format
- * @param ... Arguments for description string format
+ * @param ... Description format string (optional)
  */
-#define AGWW_WAIT_WHILE_NOT_EQUALS_WITH_DESC(value1, value2, limitInSeconds, description, ...)\
+#define AGWW_WAIT_WHILE_NOT_EQUALS(value1, value2, limitInSeconds, ...)\
 ({\
     AGWW_ASSERT_SAME_TYPE(value1, value2);\
     NSTimeInterval castedLimit = limitInSeconds;\
@@ -178,13 +124,42 @@
     AGWW_STALL_RUNLOOP_WHILE(value1 != value2, castedLimit);\
     if(value1 != value2)\
     {\
+        NSString *description = [NSString stringWithFormat:@"" __VA_ARGS__]; \
         NSString *conditionString = AGWW_VALUE_EQUALITY_FAIL_STRING(value1, @"should not be equal to", value2, 0);\
         NSString *failString = agww_makeFailString(conditionString, castedLimit, description, ##__VA_ARGS__);\
         XCTFail(@"%@", failString);\
     }\
 })
 #ifdef AGWW_SHORTHAND
-# define WAIT_WHILE_NOT_EQUALS_WITH_DESC(value1, value2, limitInSeconds, description, ...) AGWW_WAIT_WHILE_NOT_EQUALS_WITH_DESC(value1, value2, limitInSeconds, description, ...)
+# define WAIT_WHILE_NOT_EQUALS(value1, value2, limitInSeconds, ...) AGWW_WAIT_WHILE_NOT_EQUALS(value1, value2, limitInSeconds, ##__VA_ARGS__)
+#endif
+
+
+
+/**
+ * @param value1 Primitive value
+ * @param value2 Other primitive value (must be same type as 'value1')
+ * @param accuracy Primitive value
+ * @param seconds NSTimeInterval
+ * @param ... Description format string (optional)
+ */
+#define AGWW_WAIT_WHILE_NOT_EQUALS_WITH_ACCURACY(value1, value2, accuracy, limitInSeconds, ...)\
+({\
+    AGWW_ASSERT_SAME_TYPE(value1, value2);\
+    AGWW_ASSERT_SAME_TYPE(value1, accuracy);\
+    NSTimeInterval castedLimit = limitInSeconds;\
+    \
+    AGWW_STALL_RUNLOOP_WHILE(AGWW_ABSOLUTE_DIFFERENCE(value1, value2) > accuracy, castedLimit);\
+    if(AGWW_ABSOLUTE_DIFFERENCE(value1, value2) > accuracy)\
+    {\
+        NSString *description = [NSString stringWithFormat:@"" __VA_ARGS__]; \
+        NSString *conditionString = AGWW_VALUE_EQUALITY_FAIL_STRING(value1, @"should be equal to", value2, accuracy);\
+        NSString *failString = agww_makeFailString(conditionString, castedLimit, description, ##__VA_ARGS__);\
+        XCTFail(@"%@", failString);\
+    }\
+})
+#ifdef AGWW_SHORTHAND
+# define WAIT_WHILE_EQUALS_WITH_ACCURACY(value1, value2, accuracy, limitInSeconds, ...) AGWW_WAIT_WHILE_EQUALS_WITH_ACCURACY(value1, value2, accuracy, limitInSeconds, ##__VA_ARGS__)
 #endif
 
 #define AGWW_IS_DIFFERENT_TYPE(a1, a2) strcmp(@encode(__typeof__(a1)), @encode(__typeof__(a2))) != 0
@@ -223,10 +198,10 @@
     \
     NSString *reason;\
     if (accuracy) {\
-        reason = [NSString stringWithFormat:@"'%s' (%@) %@ '%s' (%@).", #value1, stringValue1, glue, #value2, stringValue2];\
+        reason = [NSString stringWithFormat:@"'%s' (%@) %@ '%s' (%@)", #value1, stringValue1, glue, #value2, stringValue2];\
     } else {\
         NSString *stringAccuracy = AGWW_PRIMITIVE_AS_STRING(accuracy);\
-        reason = [NSString stringWithFormat:@"'%s' (%@) %@ '%s' (%@) +/-'%@'.", #value1, stringValue1, glue, #value2, stringValue2, stringAccuracy];\
+        reason = [NSString stringWithFormat:@"'%s' (%@) %@ '%s' (%@) +/-'%@'", #value1, stringValue1, glue, #value2, stringValue2, stringAccuracy];\
     }\
     reason;\
 })
@@ -237,7 +212,7 @@ static NSString * agww_makeFailString(NSString *conditionString, NSTimeInterval 
     va_list args;
     va_start(args, description);
     
-    NSString *outputFormat = [NSString stringWithFormat:@"Spent too much time (%.2f seconds). %@. %@", (NSTimeInterval) seconds, conditionString, description];
+    NSString *outputFormat = [NSString stringWithFormat:@"Async test didn't complete within %.2f seconds. %@. %@", (NSTimeInterval) seconds, conditionString, description];
     NSString *outputString = AGWW_AUTORELEASE([[NSString alloc] initWithFormat:outputFormat arguments:args]);
     va_end(args);
     

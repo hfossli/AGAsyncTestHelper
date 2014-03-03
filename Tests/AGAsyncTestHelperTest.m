@@ -83,12 +83,12 @@
     NSString *conditionString = [NSString stringWithFormat:conditionFormat, value, equalTo];
     
     {
-        NSString *string = agww_makeFailString(conditionString, 5.0, @"Testdescription with param %f and another %i", 99.0f, 1000);
-        XCTAssertEqualObjects(string, @"Spent too much time (5.00 seconds). 2.00 should NOT be equal to 3.0. Testdescription with param 99.000000 and another 1000");
+        NSString *string = agww_makeFailString(conditionString, 10.0, @"Testdescription with param %f and another %i", 99.0f, 1000);
+        XCTAssertEqualObjects(string, @"Async test didn't complete within 10.00 seconds. 2.00 should NOT be equal to 3.0. Testdescription with param 99.000000 and another 1000");
     }
     {
-        NSString *string = agww_makeFailString(conditionString, 5.0, @"Testdescription without params");
-        XCTAssertEqualObjects(string, @"Spent too much time (5.00 seconds). 2.00 should NOT be equal to 3.0. Testdescription without params");
+        NSString *string = agww_makeFailString(conditionString, 7.0, @"Testdescription without params");
+        XCTAssertEqualObjects(string, @"Async test didn't complete within 7.00 seconds. 2.00 should NOT be equal to 3.0. Testdescription without params");
     }
 }
 
@@ -123,7 +123,7 @@
     XCTAssertFalse(didWait);
 }
 
-- (void)testWAIT_WHILE_WITH_DESC
+- (void)testWAIT_WHILE_withDescription
 {
     __block BOOL shouldWaitFurther = YES;
     __block BOOL didWait = FALSE;
@@ -135,7 +135,7 @@
         didWait = TRUE;
     });
     
-    AGWW_WAIT_WHILE_WITH_DESC(shouldWaitFurther, (NSTimeInterval)1.0, @"Test description %i", 12345);
+    AGWW_WAIT_WHILE(shouldWaitFurther, (NSTimeInterval)1.0, @"Test description %i", 12345);
     XCTAssertTrue(didWait);
 }
 
@@ -155,7 +155,7 @@
     XCTAssertTrue(didWait);
 }
 
-- (void)testWAIT_WHILE_EQUALS_WITH_DESC
+- (void)testWAIT_WHILE_EQUALS_withDescription
 {
     __block CGFloat value = 2.0f;
     __block BOOL didWait = FALSE;
@@ -167,7 +167,7 @@
         didWait = TRUE;
     });
     
-    AGWW_WAIT_WHILE_EQUALS_WITH_DESC(value, 2.0f, (NSTimeInterval)1.0, @"Test description %i", 12345);
+    AGWW_WAIT_WHILE_EQUALS(value, 2.0f, (NSTimeInterval)1.0, @"Test description %i", 12345);
     XCTAssertTrue(didWait);
 }
 
@@ -192,7 +192,7 @@
     XCTAssertTrue(didWait);
 }
 
-- (void)testWAIT_WHILE_EQUALS_WITH_ACCURACY_WITH_DESC
+- (void)testWAIT_WHILE_EQUALS_WITH_ACCURACY_withDescription
 {
     __block CGFloat value1 = 2.0f;
     __block BOOL didWait = FALSE;
@@ -204,7 +204,7 @@
         didWait = TRUE;
     });
     
-    AGWW_WAIT_WHILE_EQUALS_WITH_ACCURACY_WITH_DESC(value1, 2.0f, 0.001f, (NSTimeInterval)1.0, @"Test description %i", 12345);
+    AGWW_WAIT_WHILE_EQUALS_WITH_ACCURACY(value1, 2.0f, 0.001f, (NSTimeInterval)1.0, @"Test description %i", 12345);
     XCTAssertTrue(didWait);
 }
 
@@ -224,7 +224,7 @@
     XCTAssertTrue(didWait);
 }
 
-- (void)testWAIT_WHILE_NOT_EQUALS_WITH_DESC
+- (void)testWAIT_WHILE_NOT_EQUALS_withDescription
 {
     __block CGFloat value1 = 1.0f;
     __block BOOL didWait = FALSE;
@@ -236,7 +236,25 @@
         didWait = TRUE;
     });
     
-    AGWW_WAIT_WHILE_NOT_EQUALS_WITH_DESC(value1, 2.0f, (NSTimeInterval)1.0, @"Test description %i", 12345);
+    AGWW_WAIT_WHILE_NOT_EQUALS(value1, 2.0f, (NSTimeInterval)1.0, @"Test description %i", 12345);
+    XCTAssertTrue(didWait);
+}
+
+- (void)testWAIT_WHILE_NOT_EQUALS_WITH_ACCURACY
+{
+    CGFloat targetValue = 1.0;
+    CGFloat accuracy = 0.5;
+    CGFloat increment = 0.05;
+    NSUInteger numberOfIterations = 20;
+    __block CGFloat value = 0.0;
+    __block BOOL didWait = FALSE;
+
+    dispatch_apply(numberOfIterations, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^(size_t i) {
+        value += increment;
+        didWait = TRUE;
+    });
+
+    AGWW_WAIT_WHILE_NOT_EQUALS_WITH_ACCURACY(value, targetValue, accuracy, (NSTimeInterval)1.0);
     XCTAssertTrue(didWait);
 }
 
