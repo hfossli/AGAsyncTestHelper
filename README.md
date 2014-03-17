@@ -21,7 +21,7 @@ These macros will generate `XCTFail()` or `STFail()` if time limit is reached.
     WAIT_WHILE_EQUALS(<value1>, <value2>, limit_in_seconds, ...)
     WAIT_WHILE_EQUALS_WITH_ACCURACY(<value1>, <value2>, accuracy, limit_in_seconds, ...)
     WAIT_WHILE_NOT_EQUALS(<value1>, <value2>, limit_in_seconds, ...)
-    AG_STALL_RUNLOPP_WHILE(<expression_to_evaluate>, limit_in_seconds)
+    STALL_RUNLOPP_WHILE(<expression_to_evaluate>, limit_in_seconds)
 
 
 
