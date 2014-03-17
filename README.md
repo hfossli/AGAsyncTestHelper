@@ -177,6 +177,6 @@ There is also a great thread on stack overflow http://stackoverflow.com/question
 
 ### Extensive description
 
-This library or bundle enables you to do async test operations with asynchronous callbacks in your SenTestCase. Works with GCD (Grand Central Dispatch) and regular delegate callbacks. 
+This library or bundle enables you to do async test operations with asynchronous callbacks in your SenTestCase or XCTestCase. Works with GCD (Grand Central Dispatch), blocks, NSOperation and regular delegate callbacks. 
 
 [![Agens | Digital craftsmanship](http://static.agens.no/images/agens_logo_w_slogan_avenir_small.png)](http://agens.no/)
