@@ -5,10 +5,16 @@ C Macro for writing unit tests with asynchronous operations on iOS. Supports bot
 
 
 
-### Installation
+### Installation by Cocoapods
    
-Install either `AGAsyncTestHelper` or `AGAsyncTestHelper/Shorthand` with cocoapods. 
+Install either `AGAsyncTestHelper` or `AGAsyncTestHelper/Shorthand` with cocoapods. The latter one lets you write `WAIT_WHILE()` instead of `AGWW_WAIT_WHILE()`.
 
+
+### Manual installation
+
+Copy the files found in `Source` over to your project. 
+
+If you want to have shorthand enabled (`WAIT_WHILE()` instead of `AGWW_WAIT_WHILE()`) you can either create a *User Defined Build Setting* within Xcode named `AGWW_SHORTHAND` OR write `#define AGWW_SHORTHAND` some clever place in your testsuite.
 
 
 ### Overview
