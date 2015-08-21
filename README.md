@@ -2,7 +2,9 @@
 
 C Macro for writing unit tests with asynchronous operations on iOS. Supports both SenTestingKit and XCTest.
 
+### No further support
 
+This repo will not be developed or supported any further. You may continue to use it, but we recommend switching to [expecta](https://github.com/specta/expecta) instead.
 
 
 ### Install
